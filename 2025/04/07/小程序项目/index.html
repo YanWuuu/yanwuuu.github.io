@@ -17,7 +17,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="d:\xmind\Typora\image\postman.png">
 <meta property="article:published_time" content="2025-04-07T05:25:59.000Z">
-<meta property="article:modified_time" content="2025-04-15T11:05:24.562Z">
+<meta property="article:modified_time" content="2025-04-15T11:10:40.018Z">
 <meta property="article:tag" content="项目">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="d:\xmind\Typora\image\postman.png">
@@ -573,62 +573,36 @@
             :header-cell-style=&quot;&#123; background:&#39;#f2f5fc&#39;, color:&#39;#555&#39;&#125;&quot;
             border
             &gt;
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">  `tableData`接收后端传来的数据</span><br><span class="line"></span><br><span class="line">- `&lt;el-table-column prop=&quot;id&quot; label=&quot;ID&quot; width=&quot;60&quot; /&gt;`</span><br><span class="line"></span><br><span class="line">&gt; 子组件el-table-column的 prop 属性对应对象（后端传来的）中的键名</span><br><span class="line"></span><br><span class="line">2. 实现UI界面上0 对应女，1 对应男的功能</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">  `tableData`接收后端传来的数据</span><br><span class="line"></span><br><span class="line">- `&lt;el-table-column prop=&quot;id&quot; label=&quot;ID&quot; width=&quot;60&quot; /&gt;`</span><br><span class="line"></span><br><span class="line">&gt; 子组件el-table-column的 prop 属性对应对象（后端传来的）中的键名</span><br><span class="line"></span><br><span class="line">2. 实现UI界面上0 对应女，1 对应男的功能</span><br><span class="line"></span><br><span class="line">&lt;el-table-column prop=&quot;sex&quot; label=&quot;性别&quot; width=&quot;80&quot;&gt;</span><br><span class="line">    &lt;template #default=&quot;scope&quot;&gt;</span><br><span class="line">        &lt;el-tag</span><br><span class="line">            :type=&quot;scope.row.sex === 1 ? &#x27;primary&#x27; : &#x27;success&#x27;&quot;</span><br><span class="line">            disable-transitions&gt;</span><br><span class="line">           &#123;&#123;scope.row.sex === 1 ? &#x27;男&#x27; : &#x27;女&#x27; &#125;&#125;</span><br><span class="line">        &lt;/el-tag&gt;</span><br><span class="line">    &lt;/template&gt;</span><br><span class="line">&lt;/el-table-column&gt;</span><br><span class="line"></span><br><span class="line">&gt; 本质是具名插槽，名字为 default</span><br><span class="line">&gt;</span><br><span class="line">&gt; scope：是父组件的对象，可以通过它来访问父组件的属性</span><br><span class="line">&gt;</span><br><span class="line">&gt; 父组件和子组件**有包含关系即可**，不是必须要在两个.vue文件中</span><br><span class="line"></span><br><span class="line">3. 改变列表第一行颜色`header-cell-style`，加上边框`border`</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+&lt;el-table :data=&quot;tableData&quot;
+          :header-cell-style=&quot;&#123; background:&#39;#f2f5fc&#39;, color:&#39;#555&#39;&#125;&quot;
+          border
+          &gt;
 </code></pre>
 </li>
 </ul>
-<el-table-column prop="sex" label="性别" width="80">
-    <template #default="scope">
-        <el-tag
-            :type="scope.row.sex === 1 ? 'primary' : 'success'"
-            disable-transitions>
-           scope.row.sex === 1 ? '男' : '女' // 有双括号在外面
-        </el-tag>
-    </template>
-</el-table-column>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">&gt; 本质是具名插槽，名字为 default</span><br><span class="line">&gt;</span><br><span class="line">&gt; scope：是父组件的对象，可以通过它来访问父组件的属性</span><br><span class="line">&gt;</span><br><span class="line">&gt; 父组件和子组件**有包含关系即可**，不是必须要在两个.vue文件中</span><br><span class="line"></span><br><span class="line">3. 改变列表第一行颜色`header-cell-style`，加上边框`border`</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<el-table :data="tableData"
-            :header-cell-style="{ background:'#f2f5fc', color:'#555'}"
-            border
-            >
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">4. 加上按钮</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-            <el-table-column prop="operate" label="操作">
-                <el-button type="success">编辑</el-button>
-                <el-button type="danger">删除</el-button>
-            </el-table-column>
+<pre><code>        &lt;el-table-column prop=&quot;operate&quot; label=&quot;操作&quot;&gt;
+            &lt;el-button type=&quot;success&quot;&gt;编辑&lt;/el-button&gt;
+            &lt;el-button type=&quot;danger&quot;&gt;删除&lt;/el-button&gt;
+        &lt;/el-table-column&gt;
+</code></pre>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">5. 封装后端返回到前端的数据，修改后端接口代码</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-   @PostMapping("/listP")
-    public Result listP(@RequestBody User user) {
-        LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper();
-        if(StringUtils.isNotBlank(user.getName())){
-            lambdaQueryWrapper.like(User::getName, user.getName());
-        }
-        return Result.suc(userService.list(lambdaQueryWrapper));
-    }
+<p>   @PostMapping(“&#x2F;listP”)<br>    public Result listP(@RequestBody User user) {<br>        LambdaQueryWrapper<User> lambdaQueryWrapper &#x3D; new LambdaQueryWrapper();<br>        if(StringUtils.isNotBlank(user.getName())){<br>            lambdaQueryWrapper.like(User::getName, user.getName());<br>        }<br>        return Result.suc(userService.list(lambdaQueryWrapper));<br>    }</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">6. 因为后端返回给前端的数据多封装了一层，所以前端拿数据时需要往下一层</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-    const loadPost = () => {
-        axios.post('http://localhost:8080/user/listP',{}).then(res => res.data).then(res=>{
-            console.log(res);
-            if(res.code == 200){
-                tableData.value = res.data;
-            }else{
-                alert('获取数据失败')
-            }
-        })
-    }
+<pre><code>const loadPost = () =&gt; &#123;
+    axios.post(&#39;http://localhost:8080/user/listP&#39;,&#123;&#125;).then(res =&gt; res.data).then(res=&gt;&#123;
+        console.log(res);
+        if(res.code == 200)&#123;
+            tableData.value = res.data;
+        &#125;else&#123;
+            alert(&#39;获取数据失败&#39;)
+        &#125;
+    &#125;)
+&#125;
+</code></pre>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#### 6.7  分页查询</span><br><span class="line"></span><br><span class="line">1. 使用 element-plus 中的分页组件</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-template部分：
-        <el-pagination
-            :current-page="pageNum"
-            :page-size="pageSize"
-            :page-sizes="[5, 10, 20, 30]"
-            :size="size"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="total"
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-        />
-        
+<p>template部分：<br>        &lt;el-pagination<br>            :current-page&#x3D;”pageNum”<br>            :page-size&#x3D;”pageSize”<br>            :page-sizes&#x3D;”[5, 10, 20, 30]”<br>            :size&#x3D;”size”<br>            layout&#x3D;”total, sizes, prev, pager, next, jumper”<br>            :total&#x3D;”total”<br>            @size-change&#x3D;”handleSizeChange”<br>            @current-change&#x3D;”handleCurrentChange”<br>        &#x2F;&gt;</p>
 <p>script部分：<br>    <script lang="ts" setup><br>    import { onMounted, ref } from &#39;vue&#39;<br>    import axios from &#39;axios&#39;<br>    import type { ComponentSize } from &#39;element-plus&#39;</p>
 <pre><code>const tableData = ref()
 const pageSize = ref(10)
