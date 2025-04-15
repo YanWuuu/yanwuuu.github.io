@@ -373,7 +373,7 @@
 <ol start="6">
 <li>使用Postman时注意</li>
 </ol>
-<p><img src="C:\Users\Yan\Desktop\postman.png"></p>
+<p><img src="D:\xmind\Typora\image\postman.png"></p>
 <h4 id="4-4-分页的实现"><a href="#4-4-分页的实现" class="headerlink" title="4.4 分页的实现"></a>4.4 分页的实现</h4><ol>
 <li>封装分页请求的参数：新建和 controller 平级的文件夹 common ，并创建 QueryPageParam 文件</li>
 </ol>
@@ -515,6 +515,185 @@
 </blockquote>
 <h4 id="6-3-编写头部页面"><a href="#6-3-编写头部页面" class="headerlink" title="6.3 编写头部页面"></a>6.3 编写头部页面</h4><blockquote>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;script lang=&quot;ts&quot; setup&gt;  // 有 setup 表示这是组合式 API，相比选项式 API 有区别</span><br><span class="line"> const toUser = () =&gt; &#123;</span><br><span class="line">     console.log(&quot;sss&quot;); // 使用 console.log</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure></blockquote>
+<h4 id="6-4-导航栏菜单的伸缩"><a href="#6-4-导航栏菜单的伸缩" class="headerlink" title="6.4 导航栏菜单的伸缩"></a>6.4 导航栏菜单的伸缩</h4><p>目标：一个子组件事件传到另外一个子组件，<strong>通过父组件去传递</strong></p>
+<ol>
+<li>$emit 触发自定义事件，作用：子组件事件传递到父组件事件</li>
+</ol>
+<blockquote>
+<p>子组件：&lt;button @click&#x3D;”$emit(‘someEvent’)”&gt;Click Me</button></p>
+<p>父组件：定义名为 someEvent 的事件</p>
+</blockquote>
+<ol start="2">
+<li><p>父组件传递给子组件用<code>props</code></p>
+</li>
+<li><p>在父组件中，将从子组件传来的事件和传到另一个子组件属性关联起来，再在事件中做逻辑处理</p>
+</li>
+</ol>
+<h4 id="6-5-安装axios与跨域处理"><a href="#6-5-安装axios与跨域处理" class="headerlink" title="6.5 安装axios与跨域处理"></a>6.5 安装axios与跨域处理</h4><ol>
+<li>安装 <code>axios</code></li>
+</ol>
+<p><code>npm install axios --save</code></p>
+<ol start="2">
+<li><code>main.ts</code> 中引入</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">import axios from &#x27;axios&#x27;</span><br><span class="line">app.config.globalProperties.$axios = axios;  // (Vue2和Vue3有区别)</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>在<code>Main.vue</code>中使用<code>axios</code></li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">&lt;script lang=&quot;ts&quot; setup&gt;</span><br><span class="line">    import &#123; onMounted, ref &#125; from &#x27;vue&#x27;</span><br><span class="line">    import axios from &#x27;axios&#x27;</span><br><span class="line">    const item = &#123;</span><br><span class="line">    date: &#x27;2016-05-02&#x27;,</span><br><span class="line">    name: &#x27;Tom&#x27;,</span><br><span class="line">    address: &#x27;No. 189, Grove St, Los Angeles&#x27;,</span><br><span class="line">  &#125;</span><br><span class="line">    const tableData = ref(Array.from(&#123; length: 10 &#125;).fill(item))</span><br><span class="line">    const loadGet = () =&gt; &#123;</span><br><span class="line">        axios.get(&#x27;http://localhost:8080/user/list&#x27;).then(res =&gt; res.data).then(res=&gt;&#123;</span><br><span class="line">            console.log(res);</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">    const loadPost = () =&gt; &#123;</span><br><span class="line">        axios.post(&#x27;http://localhost:8080/user/listP&#x27;,&#123;&#125;).then(res =&gt; res.data).then(res=&gt;&#123;</span><br><span class="line">            console.log(res);</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">    onMounted(() =&gt; &#123;</span><br><span class="line">        //loadGet();</span><br><span class="line">        loadPost();</span><br><span class="line">    &#125;)</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>挂载：Vue将一个组件连接到DOM上的过程，从创建到显示在页面的过程</p>
+<p>.then是请求成功时的回调函数</p>
+</blockquote>
+<ol start="4">
+<li>在Common中新建一个跨域类</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">package com.wms.common;</span><br><span class="line"> import org.springframework.context.annotation.Configuration;</span><br><span class="line"> import org.springframework.web.servlet.config.annotation.CorsRegistry;</span><br><span class="line"> import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;</span><br><span class="line"> @Configuration</span><br><span class="line"> public class CorsConfig implements WebMvcConfigurer &#123;</span><br><span class="line"></span><br><span class="line">     @Override</span><br><span class="line">     public void addCorsMappings(CorsRegistry registry) &#123;</span><br><span class="line">         registry.addMapping(&quot;/**&quot;)</span><br><span class="line">                 //是否发送Cookie</span><br><span class="line">                 .allowCredentials(true)</span><br><span class="line">                 //放⾏哪些原始域</span><br><span class="line">                 .allowedOriginPatterns(&quot;*&quot;)</span><br><span class="line">                 .allowedMethods(new String[]&#123;&quot;GET&quot;, &quot;POST&quot;, &quot;PUT&quot;, &quot;DELETE&quot;&#125;)</span><br><span class="line">                 .allowedHeaders(&quot;*&quot;)</span><br><span class="line">                 .exposedHeaders(&quot;*&quot;);</span><br><span class="line">     &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>修改了后端的<code>listP</code>方法</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">@PostMapping(&quot;/listP&quot;)</span><br><span class="line">    public List&lt;User&gt; listP(@RequestBody User user) &#123;</span><br><span class="line">        LambdaQueryWrapper&lt;User&gt; lambdaQueryWrapper = new LambdaQueryWrapper();</span><br><span class="line">        if(StringUtils.isNotBlank(user.getName()))&#123;</span><br><span class="line">            lambdaQueryWrapper.like(User::getName, user.getName());</span><br><span class="line">        &#125;</span><br><span class="line">        return userService.list(lambdaQueryWrapper);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>多加了 if，如果不加 if 的话，当<code>user.getName()</code>的返回值为 null（前端没有传body），会导致查不到数据</p>
+</blockquote>
+<h4 id="6-6-列表的基本展示"><a href="#6-6-列表的基本展示" class="headerlink" title="6.6 列表的基本展示"></a>6.6 列表的基本展示</h4><ol>
+<li>是如何展示出来的，用<code>element-plus</code>封装好的属性<code>prop</code></li>
+</ol>
+<ul>
+<li><pre><code>&lt;el-table :data=&quot;tableData&quot;
+            :header-cell-style=&quot;&#123; background:&#39;#f2f5fc&#39;, color:&#39;#555&#39;&#125;&quot;
+            border
+            &gt;
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">  `tableData`接收后端传来的数据</span><br><span class="line"></span><br><span class="line">- `&lt;el-table-column prop=&quot;id&quot; label=&quot;ID&quot; width=&quot;60&quot; /&gt;`</span><br><span class="line"></span><br><span class="line">&gt; 子组件el-table-column的 prop 属性对应对象（后端传来的）中的键名</span><br><span class="line"></span><br><span class="line">2. 实现UI界面上0 对应女，1 对应男的功能</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</code></pre>
+</li>
+</ul>
+<el-table-column prop="sex" label="性别" width="80">
+    <template #default="scope">
+        <el-tag
+            :type="scope.row.sex === 1 ? 'primary' : 'success'"
+            disable-transitions>
+           scope.row.sex === 1 ? '男' : '女' // 有双括号在外面
+        </el-tag>
+    </template>
+</el-table-column>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">&gt; 本质是具名插槽，名字为 default</span><br><span class="line">&gt;</span><br><span class="line">&gt; scope：是父组件的对象，可以通过它来访问父组件的属性</span><br><span class="line">&gt;</span><br><span class="line">&gt; 父组件和子组件**有包含关系即可**，不是必须要在两个.vue文件中</span><br><span class="line"></span><br><span class="line">3. 改变列表第一行颜色`header-cell-style`，加上边框`border`</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<el-table :data="tableData"
+            :header-cell-style="{ background:'#f2f5fc', color:'#555'}"
+            border
+            >
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">4. 加上按钮</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+            <el-table-column prop="operate" label="操作">
+                <el-button type="success">编辑</el-button>
+                <el-button type="danger">删除</el-button>
+            </el-table-column>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">5. 封装后端返回到前端的数据，修改后端接口代码</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+   @PostMapping("/listP")
+    public Result listP(@RequestBody User user) {
+        LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper();
+        if(StringUtils.isNotBlank(user.getName())){
+            lambdaQueryWrapper.like(User::getName, user.getName());
+        }
+        return Result.suc(userService.list(lambdaQueryWrapper));
+    }
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">6. 因为后端返回给前端的数据多封装了一层，所以前端拿数据时需要往下一层</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+    const loadPost = () => {
+        axios.post('http://localhost:8080/user/listP',{}).then(res => res.data).then(res=>{
+            console.log(res);
+            if(res.code == 200){
+                tableData.value = res.data;
+            }else{
+                alert('获取数据失败')
+            }
+        })
+    }
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#### 6.7  分页查询</span><br><span class="line"></span><br><span class="line">1. 使用 element-plus 中的分页组件</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+template部分：
+        <el-pagination
+            :current-page="pageNum"
+            :page-size="pageSize"
+            :page-sizes="[5, 10, 20, 30]"
+            :size="size"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="total"
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+        />
+        
+<p>script部分：<br>    <script lang="ts" setup><br>    import { onMounted, ref } from &#39;vue&#39;<br>    import axios from &#39;axios&#39;<br>    import type { ComponentSize } from &#39;element-plus&#39;</p>
+<pre><code>const tableData = ref()
+const pageSize = ref(10)
+const pageNum = ref(1)
+const total = ref(0)
+const size = ref&lt;ComponentSize&gt;(&#39;default&#39;)
+const loadGet = () =&gt; &#123;
+    axios.get(&#39;http://localhost:8080/user/list&#39;).then(res =&gt; res.data).then(res=&gt;&#123;
+        console.log(res);
+    &#125;)
+&#125;
+const loadPost = () =&gt; &#123;
+    axios.post(&#39;http://localhost:8080/user/listPageC1&#39;,&#123;pageSize:pageSize.value,pageNum:pageNum.value&#125;).then(res =&gt; res.data).then(res=&gt;&#123;
+        console.log(res);
+        if(res.code == 200)&#123;
+            tableData.value = res.data;
+            total.value = res.total;
+        &#125;else&#123;
+            alert(&#39;获取数据失败&#39;)
+        &#125;
+    &#125;)
+&#125;
+onMounted(() =&gt; &#123;
+    //loadGet();
+    loadPost();
+&#125;)
+const handleSizeChange = (val: number) =&gt; &#123;  // val是组件 el-pagination 自带的属性
+    console.log(`$&#123;val&#125; items per page`)
+    pageNum.value = 1
+    pageSize.value = val;
+    loadPost()
+&#125;
+const handleCurrentChange = (val: number) =&gt; &#123;
+    console.log(`current page: $&#123;val&#125;`)
+    pageNum.value = val;
+    loadPost()
+&#125;
+</code></pre>
+<p></script></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">&gt; 总结: element-plus 已经将属性定义好了,我需要做的就是把后端传来的数据传给这个属性即可</span><br><span class="line"></span><br><span class="line">#### 6.8 查询处理</span><br><span class="line"></span><br><span class="line">1. 搜索栏：</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<div style="margin:5px;">
+            <el-input v-model="name" placeholder="请输入名字" suffix-icon="el-icon-search" style="width: 200px;"  @keyup.enter="loadPost" ></el-input>
+            <el-icon><Search /></el-icon>
+            <el-button type="primary" style="margin-left: 5px;" @click="loadPost">查询</el-button>
+            <el-button type="success">重置</el-button>
+        </div>
+        
+<p>const name &#x3D; ref();<br>   const loadPost &#x3D; () &#x3D;&gt; {<br>        axios.post(‘<a target="_blank" rel="noopener" href="http://localhost:8080/user/listPageC1',%7BpageSize:pageSize.value,pageNum:pageNum.value,param:%7Bname:name.value%7D%7D).then">http://localhost:8080/user/listPageC1&#39;,{pageSize:pageSize.value,pageNum:pageNum.value,param:{name:name.value}}).then</a>(res &#x3D;&gt; res.data).then(res&#x3D;&gt;{<br>            console.log(res);<br>            if(res.code &#x3D;&#x3D; 200){<br>                tableData.value &#x3D; res.data;<br>                total.value &#x3D; res.total;<br>            }else{<br>                alert(‘获取数据失败’)<br>            }<br>        })<br>    }</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">&gt; @keyup.enter=&quot;loadPost&quot;：回车事件</span><br><span class="line"></span><br><span class="line">实现流程：绑定响应式数据 name ，再将 name 传到后端去查询</span><br><span class="line"></span><br><span class="line">2. 下拉查询：</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>&lt;el-select<br>                v-model&#x3D;”sex”  &#x2F;&#x2F; 定义一个响应式属性 sex<br>                filterable<br>                placeholder&#x3D;”请选择性别”<br>                style&#x3D;”width: 240px; margin-left: 5px;”<br>            &gt;<br>            <el-option
+            v-for="item in sexs"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+            /><br>            </el-select></p>
+<p>const sex &#x3D; ref();<br>    const sexs &#x3D; [<br>  {<br>    value: ‘1’,<br>    label: ‘男’,<br>  },<br>  {<br>    value: ‘0’,<br>    label: ‘女’,<br>  }];<br>  axios.post(‘<a target="_blank" rel="noopener" href="http://localhost:8080/user/listPageC1">http://localhost:8080/user/listPageC1</a>‘,<br>        {pageSize:pageSize.value,pageNum:pageNum.value,param:{name:name.value,sex:sex.value}}) &#x2F;&#x2F; 新加 sex，传到后端</p>
+<p>后端新增：<br>String sex &#x3D; (String) param.get(“sex”);<br>if (StringUtils.isNotBlank(sex)){<br>            lambdaQueryWrapper.eq(User::getSex,sex);<br>        }</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">3. 重置</span><br><span class="line"></span><br><span class="line">实现流程：将 sex 和 name 属性清空</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>&lt;el-button type&#x3D;”success” @click&#x3D;”resetParam”&gt;重置</el-button><br>   const resetParam &#x3D;() &#x3D;&gt; {<br>        name.value &#x3D; ‘’;<br>        sex.value &#x3D; ‘’;<br>    }</p>
+<pre><code>
+
+
+
+
+
+
+
+
+
+</code></pre>
 
       
 
