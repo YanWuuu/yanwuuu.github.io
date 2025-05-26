@@ -78,507 +78,6 @@
       </tags>
   </entry>
   <entry>
-    <title>小程序项目</title>
-    <url>/2025/04/07/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E9%A1%B9%E7%9B%AE/</url>
-    <content><![CDATA[<h1 id="小程序项目"><a href="#小程序项目" class="headerlink" title="小程序项目"></a>小程序项目</h1><h3 id="1-近期目标"><a href="#1-近期目标" class="headerlink" title="1. 近期目标"></a>1. 近期目标</h3><p>微信小程序上传照片，包括微信开发者工具和后端</p>
-<p>看明哥学 Vue，多思考，碰到哪里不清楚，去看 Vue 开发者文档，弄懂</p>
-<p>前端的处理逻辑，有技术含量的东西</p>
-<p>后端的细节，经验  </p>
-<p>学习C++·，编程四大件（有技术含量的）</p>
-<p>更改 hexo 博客的样式</p>
-<hr>
-<h3 id="2-目前完成的工作"><a href="#2-目前完成的工作" class="headerlink" title="2. 目前完成的工作"></a>2. 目前完成的工作</h3><ol>
-<li>售后服务的上传表单功能(没有上传照片)   </li>
-<li>保养功能的上传照片功能，保存在云服务器的 <code>/var/www/html/images</code> 中, <code>url</code>也已经保存在数据库中</li>
-</ol>
-<hr>
-<h3 id="3-注意"><a href="#3-注意" class="headerlink" title="3. 注意"></a>3. 注意</h3><ol>
-<li>IDEA中删除东西时，小心<strong>默认点击</strong>的文件也被删除了</li>
-</ol>
-<hr>
-<h3 id="4-后端（Backend）"><a href="#4-后端（Backend）" class="headerlink" title="4. 后端（Backend）"></a>4. 后端（Backend）</h3><h4 id="4-0-什么是后端？"><a href="#4-0-什么是后端？" class="headerlink" title="4.0 什么是后端？"></a>4.0 什么是后端？</h4><p><em><strong>用户请求处理、逻辑处理、数据处理</strong></em></p>
-<h4 id="4-1-打包相关命令"><a href="#4-1-打包相关命令" class="headerlink" title="4.1  打包相关命令"></a>4.1  打包相关命令</h4><p>打 jar 包命令 <code>mvn package</code>  </p>
-<p>我的 jar 包放在 <code>/home</code>中  </p>
-<p>运行 jar 包命令 <code>java -jar 包名</code>  </p>
-<h4 id="4-2-创建后端项目"><a href="#4-2-创建后端项目" class="headerlink" title="4.2 创建后端项目"></a>4.2 创建后端项目</h4><ol>
-<li>创建新文件夹并在IDEA中打开</li>
-<li><code>New module</code></li>
-<li><code>Spring Initiallizr</code></li>
-</ol>
-<blockquote>
-<p>取项目名 选择JDK版本 更改 Group </p>
-<p>勾选依赖：Lombok、Spring Web、MySQL Driver  </p>
-</blockquote>
-<ol start="4">
-<li>删掉项目里一些自动生成且不需要的文件  </li>
-<li>加入<code>mybatis-plus</code>支持</li>
-</ol>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;com.baomidou&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;mybatis-plus-boot-starter&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;3.5.0&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;  // 也可以去官网寻找,这个是springboot2版本</span><br></pre></td></tr></table></figure>
-
-<p><a href="https://baomidou.com/">MyBatis-plus官网</a>  </p>
-<ol start="6">
-<li>新建一个 HelloController 测试一下</li>
-</ol>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">@RestController  // 标识这个类是一个REST控制器，控制器返回的对象会自动化序列化为JSON格式</span><br><span class="line">public class HelloController &#123;</span><br><span class="line">    @GetMapping // 处理客户端发送来的GET请求</span><br><span class="line">    public String hello()&#123;</span><br><span class="line">        return &quot;hello wms&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>REST控制器：用于处理和响应RESTful Web服务请求的组件，允许客户端通过HTTP协议与服务器进行通信</p>
-</blockquote>
-<ol start="7">
-<li>创建数据库实例</li>
-</ol>
-<blockquote>
-<p>数据库在很多情况下需要<em><strong>刷新</strong></em>才能显示</p>
-</blockquote>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">CREATE TABLE USER（表名）</span><br><span class="line">(</span><br><span class="line">    id INT AUTO_INCREMENT COMMENT &#x27;主键&#x27; </span><br><span class="line">    PRIMARY KEY,</span><br><span class="line">    NO VARCHAR(20) NULL COMMENT &#x27;账号&#x27;,</span><br><span class="line">    NAME VARCHAR(100) NOT NULL COMMENT &#x27;名字&#x27;,</span><br><span class="line">    PASSWORD VARCHAR(20) NOT NULL COMMENT &#x27;密码&#x27;,</span><br><span class="line">    age INT NULL,</span><br><span class="line">    sex INT NULL COMMENT &#x27;性别&#x27;,</span><br><span class="line">    phone VARCHAR(20) NULL COMMENT &#x27;电话&#x27;,</span><br><span class="line">    role_id INT NULL COMMENT &#x27;角色 0超级管理员, 1管理员，2普通账号&#x27;,</span><br><span class="line">    isValid VARCHAR(4) DEFAULT &#x27;Y&#x27; NULL COMMENT &#x27;是否有效，Y有效，其他无效&#x27;</span><br><span class="line">)</span><br><span class="line">    CHARSET = utf8;</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>注意：（）中的最后一行不要有逗号，这是语法错误</p>
-</blockquote>
-<ol start="8">
-<li>配置 <code>yml</code>文件，将自带的 <code>properties</code> 配置文件改为 <code>yml</code></li>
-</ol>
-<blockquote>
-<p>作用：连接数据库</p>
-</blockquote>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">server:</span><br><span class="line">  port: 8080  // 这个后端应用程序将运行在本地的 8080 端口上</span><br><span class="line">  servlet:</span><br><span class="line">    context-path: /</span><br><span class="line"></span><br><span class="line">spring:</span><br><span class="line">  datasource:</span><br><span class="line">    driver-class-name: com.mysql.cj.jdbc.Driver</span><br><span class="line">    url: jdbc:mysql://localhost:3306/wms02(数据库名)?serverTimezone=Asia/Shanghai</span><br><span class="line">    username: root</span><br><span class="line">    password: 123456</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>3306 是 Mysql 数据库的默认端口</p>
-</blockquote>
-<ol start="9">
-<li>编写测试代码</li>
-</ol>
-<ul>
-<li>创建实体类</li>
-</ul>
-<blockquote>
-<p>注意要对应数据库中的字段 </p>
-<p>数据库和 JAVA 对应字段规则：JAVA中的大写对应数据库中的_</p>
-<blockquote>
-<p>数据库中有下划线，JAVA中用大写</p>
-<p>数据库中是大写，JAVA中用小写</p>
-</blockquote>
-</blockquote>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">@Entity  // 表示其是JPA的实体类，会被映射到数据库中的一张表</span><br><span class="line">@Table(name = &quot;xxx&quot;) // 选择表的名字，没有这个的话，会自动根据类名要求你有这个表。标记了name也可能报错，最好的办法就是听它的（创建一个它要的表名）</span><br><span class="line">@Data  // 是 Lombok 提供的一个注解，自动生成getter、setter、toString()等方法</span><br><span class="line">public class User &#123;</span><br><span class="line">	@Id  // 标记实体的主键</span><br><span class="line">    private int id;</span><br><span class="line">    private String no;</span><br><span class="line">    private String name;</span><br><span class="line">    private String password;</span><br><span class="line">    private int sex;</span><br><span class="line">    private int roleId;</span><br><span class="line">    private String isvalid;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>@Entity和Table需要新增 pom 依赖</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">  &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">  &lt;artifactId&gt;spring-boot-starter-data-jpa&lt;/artifactId&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure></blockquote>
-<ul>
-<li>创建mapper接口</li>
-</ul>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">@Mapper</span><br><span class="line">public interface UserMapper extends BaseMapper&lt;User&gt; &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>控制反转和依赖注入是什么？</p>
-<blockquote>
-<p>控制反转（IoC）：把对象的创建交给Spring容器来控制，称为Bean</p>
-</blockquote>
-<blockquote>
-<p>依赖注入：将一个类依赖的对象（Bean）注入进去，而不是自己创建</p>
-</blockquote>
-<p>@Mapper：将这个接口注册为<strong>Bean</strong>，后续就可以在Service层中<strong>依赖注入</strong>这个Mapper接口</p>
-<p>BaseMapper<User>：Mybatis-plus提供的一个通用Mapper接口，提供了许多常用的CRUD操作，作用：UserMapper可以直接使用与User实体相关的CRUD操作</p>
-</blockquote>
-<ul>
-<li><p>创建service接口</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">public interface UserService extends IService&lt;User&gt; &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>Iservice<User>：Mybatis-plus提供的通用接口，提供了一系列数据库的CRUD操作方法</p>
-<p><strong>为什么需要接口和实现类？</strong></p>
-<blockquote>
-<p>接口定义了类所必须实现的一组方法，但不关心这些方法是如何具体实现的</p>
-</blockquote>
-<blockquote>
-<p>实现类具体实现了接口中的方法，<strong>实现了特定业务</strong></p>
-</blockquote>
-<blockquote>
-<p>好处：解耦</p>
-</blockquote>
-</blockquote>
-</li>
-<li><p>创建service实现类</p>
-</li>
-</ul>
-<p>新建一个impl文件夹，创建UserServiceImpl</p>
-  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">@Service</span><br><span class="line">public class UserServiceImpl extends ServiceImpl&lt;UserMapper, User&gt; implements UserService &#123;&#125;</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>@Service：将这个类注册为Spring容器中的一个Bean，之后可以依赖注入</p>
-<p>ServiceImpl&lt;UserMapper,User&gt;：Mybatis-Plus提供的通用服务实现类，作用：UserServiceImpl（继承它的类）可以直接使用CRUD操作。</p>
-<p>ServiceImpl通过UserMapper，提供对数据库的访问（特定业务）</p>
-</blockquote>
-<ul>
-<li>在HelloCroller中测试</li>
-</ul>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">@RequestMapping(&quot;/user&quot;)</span><br><span class="line">@RestController</span><br><span class="line">public class HelloController &#123;</span><br><span class="line">    @GetMapping</span><br><span class="line">    public String hello()&#123;</span><br><span class="line">        return &quot;hello wms&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">	</span><br><span class="line">	//新增测试代码</span><br><span class="line">    @Autowired  // 自动装配，自动注入UserService实例</span><br><span class="line">    private UserService userService;</span><br><span class="line"></span><br><span class="line">    @GetMapping(&quot;/list&quot;)</span><br><span class="line">    public List&lt;User&gt; list()&#123;</span><br><span class="line">        return userService.list();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>也可以自己去创建一个UserService</li>
-</ul>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// HelloCtroller中</span><br><span class="line">@GetMapping(&quot;/list&quot;)</span><br><span class="line">    public List&lt;User&gt; list()&#123;</span><br><span class="line">        return userService.listAll();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">// UserService中去声明</span><br><span class="line">public interface UserService extends IService&lt;User&gt; &#123;</span><br><span class="line">    List&lt;User&gt; listAll();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// UserServiceImpl 中去实现</span><br><span class="line">@Service</span><br><span class="line">public class UserServiceImpl extends ServiceImpl&lt;UserMapper, User&gt; implements UserService &#123;</span><br><span class="line">    @Resource  // 也是用于依赖注入</span><br><span class="line">    private UserMapper userMapper;</span><br><span class="line">    @Override  // 表示其是对接口方法的重写</span><br><span class="line">    public List&lt;User&gt; listAll() &#123;</span><br><span class="line">        return userMapper.listAll();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//UserMapper 中</span><br><span class="line">@Mapper</span><br><span class="line">public interface UserMapper extends BaseMapper&lt;User&gt; &#123;</span><br><span class="line">    List&lt;User&gt; listAll();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>下一步，去resource中新建文件夹Mapper并在其中新建文件UserMapper.xml  </p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;!DOCTYPE mapper PUBLIC &quot;-//mybatis.org//DTD Mapper 3.0//EN&quot;</span><br><span class="line">        &quot;http://mybatis.org/dtd/mybatis-3-mapper.dtd&quot;&gt;</span><br><span class="line">&lt;mapper namespace=&quot;com.wms.mapper.UserMapper&quot;&gt;</span><br><span class="line">    &lt;select id=&quot;listAll&quot; parameterType=&quot;com.wms.entity.User&quot;&gt;</span><br><span class="line">        select * from  user</span><br><span class="line">    &lt;/select&gt;</span><br><span class="line">&lt;/mapper&gt;</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>作用：为UserMapper接口提供了一个SQL查询操作 listAll</p>
-<p>listAll 会执行 select * from  user 语句，从 user表中查询数据</p>
-<p>查询结果会自动映射到 com.wms.entity.User 类型的对象并返回调用方</p>
-<blockquote>
-<p>映射：在Mybatis中，映射指的是将SQL查询的结果集转换成 Java 对象的过程</p>
-</blockquote>
-<p>namespace：作用：将 XML 中定义的 SQL 语句和 Java 接口中的方法绑定</p>
-<p>parameterType：作用：制定了 SQL 操作所接收的参数类型</p>
-</blockquote>
-<p>运行测试。。。</p>
-<h4 id="4-3-实现增删改查"><a href="#4-3-实现增删改查" class="headerlink" title="4.3 实现增删改查"></a>4.3 实现增删改查</h4><ol>
-<li>新增</li>
-</ol>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">@PostMapping(&quot;/save&quot;)</span><br><span class="line">    public boolean save(@RequestBody User user)&#123;</span><br><span class="line">        return userService.save(user);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>@RequestBody：将HTTP请求的主体（body）映射到方法的参数上，在这里是将去请求的的 JSON 数据转换为 User 类型的对象</p>
-<p>GET：请求的数据通过 URL 传递</p>
-<p>POST：请求的数据通过请求体（body）发送，而不是通过 URL ，请求体中可以包含表单数据、JSON数据等</p>
-</blockquote>
-<ol start="2">
-<li>修改</li>
-</ol>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">@PostMapping(&quot;/mod&quot;)</span><br><span class="line">    public boolean mod(@RequestBody User user)&#123;</span><br><span class="line">        return userService.updateById(user);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<ol start="3">
-<li>新增或修改</li>
-</ol>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">@PostMapping(&quot;/saveOrMod&quot;)</span><br><span class="line">   public boolean saveOrMod(@RequestBody User user)&#123;</span><br><span class="line">       return userService.saveOrUpdate(user);</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<ol start="4">
-<li>删除</li>
-</ol>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">@GetMapping(&quot;/delete&quot;)</span><br><span class="line">    public boolean delete(Integer id)&#123;</span><br><span class="line">        return userService.removeById(id);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<ol start="5">
-<li>查询（模糊、匹配）</li>
-</ol>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">@PostMapping(&quot;/listP&quot;)</span><br><span class="line">   public List&lt;User&gt; listP(@RequestBody User user)&#123;</span><br><span class="line">       LambdaQueryWrapper&lt;User&gt; lambdaQueryWrapper = new LambdaQueryWrapper();</span><br><span class="line">       lambdaQueryWrapper.like(User::getName,user.getName());</span><br><span class="line">       return userService.list(lambdaQueryWrapper);</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>作用：查询数据库中与请求体的 User 对象的 name 属性匹配的所有对象</p>
-<p>LambdaQueryWrapper是 Mybatis-Plus 提供的一个工具类，用于构建数据库查询条件，作用：就像是写了SQL查询语句一样</p>
-<p>lambdaQueryWrapper.like：模糊匹配，.equal就是完全匹配</p>
-</blockquote>
-<ol start="6">
-<li>使用Postman时注意</li>
-</ol>
-<p><img src="D:\xmind\Typora\image\postman.png"></p>
-<h4 id="4-4-分页的实现"><a href="#4-4-分页的实现" class="headerlink" title="4.4 分页的实现"></a>4.4 分页的实现</h4><ol>
-<li>封装分页请求的参数：新建和 controller 平级的文件夹 common ，并创建 QueryPageParam 文件</li>
-</ol>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">@Data</span><br><span class="line">public class QueryPageParam &#123;</span><br><span class="line">    private static int PAGE_SIZE = 20;</span><br><span class="line">    private static int PAGE_NUM = 1;</span><br><span class="line"></span><br><span class="line">    private int pageSize=PAGE_SIZE;</span><br><span class="line">    private int pageNum=PAGE_NUM;</span><br><span class="line"></span><br><span class="line">    private HashMap param;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>静态方法（static）：不依赖于对象进行访问，方便在没有创建对象的情况下进行调用  </p>
-<p>pageNum：页数</p>
-<p>pafeSize：每页的数据量  </p>
-<p><code>offset = (pageNum - 1) * pageSize</code>：表示从数据源中查询结果时，跳过了多少条数据</p>
-</blockquote>
-<p>再在 HelloController 中新增  </p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">@PostMapping(&quot;/listPage&quot;)</span><br><span class="line">public List&lt;User&gt; listPage(@RequestBody QueryPageParam query)&#123;</span><br><span class="line">    System.out.println(query);</span><br><span class="line"></span><br><span class="line">    System.out.println(&quot;num===&quot; + query.getPageNum());</span><br><span class="line">    System.out.println(&quot;size===&quot; + query.getPageSize());</span><br><span class="line"></span><br><span class="line">    HashMap param = query.getParam();</span><br><span class="line">    System.out.println(&quot;name===&quot; + param.get(&quot;name&quot;));</span><br><span class="line">    System.out.println(&quot;no===&quot; + param.get(&quot;no&quot;));</span><br><span class="line"></span><br><span class="line">    return null;</span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>添加分页拦截器</li>
-</ol>
-<p>在 common 中创建 MybatisPlusConfig 文件  </p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">@Configuration</span><br><span class="line">public class MybatisPlusConfig &#123;</span><br><span class="line">    @Bean</span><br><span class="line">    public MybatisPlusInterceptor mybatisPlusInterceptor() &#123;</span><br><span class="line">        MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();</span><br><span class="line">        interceptor.addInnerInterceptor(new PaginationInnerInterceptor(DbType.MYSQL));</span><br><span class="line">        return interceptor;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>@Configuration：MybatisPlusConfig 是一个配置类，里面定义的 Bean 可以被 Spring 管理</p>
-<p>作用：只需传入当前页码和每页显示的数量，MyBatis Plus 会<strong>自动生成</strong>适当的 SQL 查询来获取相应的数据。</p>
-</blockquote>
-<ol start="3">
-<li>在HelloController中利用 MybatisPlus 提供的封装对象 <strong>Page</strong> 去分页</li>
-</ol>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"> @PostMapping(&quot;/listPage&quot;)</span><br><span class="line">    public List&lt;User&gt; listPage(@RequestBody QueryPageParam query)&#123;</span><br><span class="line"></span><br><span class="line">        HashMap param = query.getParam();</span><br><span class="line">        String name = (String)param.get(&quot;name&quot;);</span><br><span class="line"></span><br><span class="line">        Page&lt;User&gt; page = new Page();  // Page&lt;User&gt;：MybatisPlus 提供的分页对象</span><br><span class="line">        page.setPages(query.getPageNum());</span><br><span class="line">        page.setSize(query.getPageSize());</span><br><span class="line"></span><br><span class="line">        LambdaQueryWrapper&lt;User&gt; lambdaQueryWrapper = new LambdaQueryWrapper();</span><br><span class="line">        lambdaQueryWrapper.like(User::getName,name);</span><br><span class="line"></span><br><span class="line">        IPage result = userService.page(page,lambdaQueryWrapper);  // MybatisPlus提供的接口，用于封装分页查询的结果</span><br><span class="line">        System.out.println(&quot;total===&quot; + result.getTotal());  // 打印总记录数</span><br><span class="line">        return result.getRecords();  // 返回当前页的用户记录</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ol start="4">
-<li>也可以自己在 HelloController中去定义一个userService的方法，然后去UserService声明方法，UserServiceImpl去实现，再在UserMapper中声明方法，最后在xml中写SQL语句</li>
-</ol>
-<blockquote>
-<p>注意： UserServiceImpl 中需要依赖注入UserMapper，使用它的方法</p>
-</blockquote>
-<h4 id="4-5-返给前端数据的封装"><a href="#4-5-返给前端数据的封装" class="headerlink" title="4.5 返给前端数据的封装"></a>4.5 返给前端数据的封装</h4><ol>
-<li>在 common 中新建 Result 类</li>
-</ol>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">@Data</span><br><span class="line">public class Result &#123;</span><br><span class="line">    private int code;  // 编码200/400</span><br><span class="line">    private String msg;  // 成功/失败</span><br><span class="line">    private Long total;  // 总记录数</span><br><span class="line">    private Object data;  // 数据</span><br><span class="line"></span><br><span class="line">    public static Result fail()&#123;</span><br><span class="line">        return result(400, &quot;失败&quot;, 0L, null);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static Result suc()&#123;</span><br><span class="line">        return result(200, &quot;成功&quot;, 0L, null);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static Result suc(Object data)&#123;</span><br><span class="line">        return result(200, &quot;成功&quot;, 0L, data);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static Result suc(Object data, Long total)&#123;</span><br><span class="line">        return result(200, &quot;成功&quot;, total, data);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    private static Result result(int code,String msg,Long total,Object data)&#123;</span><br><span class="line">        Result res = new Result();</span><br><span class="line">        res.setCode(code);</span><br><span class="line">        res.setMsg(msg);</span><br><span class="line">        res.setTotal(total);</span><br><span class="line">        res.setData(data);</span><br><span class="line">        return res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>将 HelloController 中的返回值类型改为我自己创建的 Result 类</li>
-</ol>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">@PostMapping(&quot;/listPageC1&quot;)</span><br><span class="line">    public Result listPageC1(@RequestBody QueryPageParam query) &#123;</span><br><span class="line"></span><br><span class="line">        HashMap param = query.getParam();</span><br><span class="line">        String name = (String) param.get(&quot;name&quot;);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        Page&lt;User&gt; page = new Page();  // Page&lt;User&gt;：MybatisPlus 提供的分页对象</span><br><span class="line">        page.setPages(query.getPageNum());</span><br><span class="line">        page.setSize(query.getPageSize());</span><br><span class="line"></span><br><span class="line">/*        LambdaQueryWrapper&lt;User&gt; lambdaQueryWrapper = new LambdaQueryWrapper();</span><br><span class="line">        lambdaQueryWrapper.like(User::getName,name);*/</span><br><span class="line"></span><br><span class="line">        IPage result = userService.pageC(page);</span><br><span class="line">        System.out.println(&quot;total===&quot; + result.getTotal());  // 打印总记录数</span><br><span class="line">        return Result.suc(result.getRecords(),result.getTotal());</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-
-<ol start="3">
-<li>利用框架提供的方法：<code>ResponseEntity </code>类</li>
-</ol>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">@PostMapping(&quot;/afterSale&quot;)</span><br><span class="line">public ResponseEntity&lt;Void&gt; save(@RequestBody AfterSale afterSale)&#123;</span><br><span class="line">    afterSaleService.save(afterSale);</span><br><span class="line">    return ResponseEntity.ok().build();  // 生成一个状态码 200 的响应，没有响应体</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>ResponseEntity：Spring Web中的一个类，处理 HTTP 响应的一个重要类</p>
-</blockquote>
-<hr>
-<h3 id="5-微信开发者工具"><a href="#5-微信开发者工具" class="headerlink" title="5. 微信开发者工具"></a>5. 微信开发者工具</h3><blockquote>
-<p>此节目的：知道这些配置在哪，然后去<a href="https://developers.weixin.qq.com/doc/">微信开发者文档</a>查看细节  </p>
-<blockquote>
-<p>前端<strong>界面设计</strong>方法论：要有<strong>块</strong>的概念，每一块都用 view <strong>包裹</strong>起来，作用：更好布局</p>
-<blockquote>
-<p>父组件看自己里面包含的东西就是看作一个块</p>
-</blockquote>
-<p>微信小程序的调试器的Wxml左边的按钮可以看到界面上<strong>DOM的布局</strong>，方便进行<strong>调试</strong>（网页上也可以通过这个按钮去看布局）</p>
-</blockquote>
-</blockquote>
-<h4 id="5-1-全局配置"><a href="#5-1-全局配置" class="headerlink" title="5.1 全局配置"></a>5.1 <strong>全局配置</strong></h4><p><code>tabBar</code>：底部栏</p>
-<blockquote>
-<p>照片的路径 syntax</p>
-<p>本地：&#x2F;images（自己创建的文件夹）&#x2F;xxx</p>
-<p>远程服务器： <a href="http://47.109.96.127/images/hanji1.png">http://47.109.96.127/images/hanji1.png</a></p>
-</blockquote>
-<h4 id="5-2-页面配置"><a href="#5-2-页面配置" class="headerlink" title="5.2 页面配置"></a>5.2 <strong>页面配置</strong></h4><blockquote>
-<p>在<strong>window</strong>属性里配置</p>
-</blockquote>
-<p><code>navigationBarTitleText</code>：页标题  </p>
-<p><code>navigationBarBackgroundColor</code>：导航栏背景颜色</p>
-<h4 id="5-3-组件"><a href="#5-3-组件" class="headerlink" title="5.3 组件"></a>5.3 组件</h4><p><code>swiper</code>：滑块视图容器  </p>
-<p><code>image</code>：图片 </p>
-<blockquote>
-<p>mode：防止图片变形</p>
-</blockquote>
-<p><code>button</code>：按钮  </p>
-<p><code>input</code>：输入框</p>
-<blockquote>
-<p>bindinput&#96;&#x3D;“xxx（自定义函数）”：作用：键盘输入时或内容改变时触发这个函数</p>
-</blockquote>
-<h4 id="5-4-重要属性"><a href="#5-4-重要属性" class="headerlink" title="5.4 重要属性"></a>5.4 重要属性</h4><p><code>width：100%  </code></p>
-<p><code>height：100vh</code>：设置元素高度，1vh等于视口高度的1%   </p>
-<p><code>text-align：center</code>：水平居中对齐文本  </p>
-<p><code>border-bottom: darkgrey solid 1px</code>：边框颜色和厚度</p>
-<h4 id="5-5-API"><a href="#5-5-API" class="headerlink" title="5.5 API"></a>5.5 API</h4><p><code>wx.navigateTo</code>：保存当前界面，跳转到应用内的某个界面，但是不能跳转到<code>tabbar</code>页面</p>
-<blockquote>
-<p>可以通过将父包裹元素设置上事件，来实现<strong>被包裹的元素的点击事件都为它</strong> </p>
-</blockquote>
-<p><code>wx.showToast</code>：在页面上显示一个提示框  </p>
-<p><code>wx.request</code>：发送 HTTPS 网络请求</p>
-<h4 id="5-6-使用-iconfont-的步骤"><a href="#5-6-使用-iconfont-的步骤" class="headerlink" title="5.6 使用 iconfont 的步骤"></a>5.6 使用 iconfont 的步骤</h4><ol>
-<li>去官网选择图标加入项目</li>
-<li>复制代码去浏览器打开  </li>
-<li>创建一个和 page <strong>平级</strong>的文件夹 styles  </li>
-<li>在 styles 里创建 iconfont.wxss 文件，将第二步复制的代码粘贴进去  </li>
-<li>在 app.wxss 里导入</li>
-</ol>
-<p><code>@import &quot;/styles/iconfont.wxss&quot;;</code></p>
-<h4 id="5-7-框架接口"><a href="#5-7-框架接口" class="headerlink" title="5.7 框架接口"></a>5.7 框架接口</h4><p><code>App</code>：在<code>app.js</code>中，作用：注册小程序，指定小程序的生命周期回调等  </p>
-<p><code>Page</code>：在<code>页面.js</code>中，作用：注册页面，指定页面的初始数据、生周期回调、事件处理函数等  </p>
-<blockquote>
-<p><code>data</code>：是响应式的，作用：存储和管理数据 </p>
-<blockquote>
-<p>使用 <strong><code>setData</code></strong> 方法，可以将变化的数据自动渲染到前端页面</p>
-</blockquote>
-</blockquote>
-<h4 id="5-8-实现上传表单功能"><a href="#5-8-实现上传表单功能" class="headerlink" title="5.8 实现上传表单功能"></a>5.8 实现上传表单功能</h4><ol>
-<li>在<code>data</code>中定义变量</li>
-<li>在<code>input</code>组件的属性<code>bindinput</code>绑定函数，在函数中编写<strong>更新页面数据的方法</strong>（<code>setData</code>），完成响应式</li>
-</ol>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">onModelInput(event) &#123;</span><br><span class="line">  this.setData(&#123;</span><br><span class="line">    model: event.detail.value</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ol start="3">
-<li>在<code>button</code>组件绑定的方法中实现<code>request</code></li>
-</ol>
-<blockquote>
-<p>预处理：通过解构赋值取出变量，并检查是否表单都有输入，没有的话进行提示</p>
-<blockquote>
-<p>解构赋值：直接对多个变量同时赋值</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">submitForm()&#123;</span><br><span class="line"> const &#123;model, serial,fault&#125; = this.data;</span><br><span class="line"> if(!model || !serial || !fault)&#123;</span><br><span class="line">   wx.showToast(&#123;</span><br><span class="line">     title: &#x27;请填写完整信息&#x27;,</span><br><span class="line">     icon: &#x27;none&#x27;</span><br><span class="line">   &#125;)</span><br><span class="line">   return;  // 如果满足条件，则退出，不执行后面的 request</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure></blockquote>
-</blockquote>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">wx.request(&#123;</span><br><span class="line">      url:&#x27;http://localhost:8080/user/afterSale&#x27;,</span><br><span class="line">      method:&#x27;POST&#x27;,</span><br><span class="line">      header:&#123;</span><br><span class="line">        &#x27;Content-Type&#x27;:&#x27;application/json&#x27;</span><br><span class="line">      &#125;,</span><br><span class="line">      data:&#123;</span><br><span class="line">        model:model,</span><br><span class="line">        serial:serial,</span><br><span class="line">        fault:fault</span><br><span class="line">      &#125;,</span><br><span class="line">      success:(res) =&gt;&#123;  // 这是一个成功回调函数</span><br><span class="line">        if(res.statusCode === 200)&#123;</span><br><span class="line">          wx.showToast(&#123;</span><br><span class="line">            title:&#x27;提交成功&#x27;,</span><br><span class="line">            icon:&#x27;success&#x27;  // 显示的图标</span><br><span class="line">          &#125;)</span><br><span class="line">        &#125;else&#123;</span><br><span class="line">          wx.showToast(&#123;</span><br><span class="line">            title:&#x27;提交失败&#x27;,</span><br><span class="line">            icon:&#x27;none&#x27;</span><br><span class="line">          &#125;)</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;)</span><br></pre></td></tr></table></figure>
-
-<hr>
-<h3 id="6-后台管理系统（Vue）"><a href="#6-后台管理系统（Vue）" class="headerlink" title="6. 后台管理系统（Vue）"></a>6. 后台管理系统（Vue）</h3><h4 id="6-1-页面布局的搭建"><a href="#6-1-页面布局的搭建" class="headerlink" title="6.1 页面布局的搭建"></a>6.1 页面布局的搭建</h4><ol>
-<li>在<code>components</code>里创建新的<code>.vue</code>文件，加入element-plus 提供的布局代码</li>
-<li>在<code>App.vue</code>中导入，在<code>template</code>中使用这个标签</li>
-</ol>
-<h4 id="6-2-页面布局的拆分"><a href="#6-2-页面布局的拆分" class="headerlink" title="6.2 页面布局的拆分"></a>6.2 页面布局的拆分</h4><ul>
-<li>将<code>elment-plus</code>给的代码分块，分别放进不同的<code>.vue</code>文件，再在剪切的地方引入（6.1中的两步）组件</li>
-</ul>
-<blockquote>
-<p><code>element-plus</code>中的<strong>图标需要再次引入</strong></p>
-</blockquote>
-<h4 id="6-3-编写头部页面"><a href="#6-3-编写头部页面" class="headerlink" title="6.3 编写头部页面"></a>6.3 编写头部页面</h4><blockquote>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;script lang=&quot;ts&quot; setup&gt;  // 有 setup 表示这是组合式 API，相比选项式 API 有区别</span><br><span class="line"> const toUser = () =&gt; &#123;</span><br><span class="line">     console.log(&quot;sss&quot;); // 使用 console.log</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure></blockquote>
-<h4 id="6-4-导航栏菜单的伸缩"><a href="#6-4-导航栏菜单的伸缩" class="headerlink" title="6.4 导航栏菜单的伸缩"></a>6.4 导航栏菜单的伸缩</h4><p>目标：一个子组件事件传到另外一个子组件，<strong>通过父组件去传递</strong></p>
-<ol>
-<li>$emit 触发自定义事件，作用：子组件事件传递到父组件事件</li>
-</ol>
-<blockquote>
-<p>子组件：&lt;button @click&#x3D;”$emit(‘someEvent’)”&gt;Click Me</button></p>
-<p>父组件：定义名为 someEvent 的事件</p>
-</blockquote>
-<ol start="2">
-<li><p>父组件传递给子组件用<code>props</code></p>
-</li>
-<li><p>在父组件中，将从子组件传来的事件和传到另一个子组件属性关联起来，再在事件中做逻辑处理</p>
-</li>
-</ol>
-<h4 id="6-5-安装axios与跨域处理"><a href="#6-5-安装axios与跨域处理" class="headerlink" title="6.5 安装axios与跨域处理"></a>6.5 安装axios与跨域处理</h4><ol>
-<li>安装 <code>axios</code></li>
-</ol>
-<p><code>npm install axios --save</code></p>
-<ol start="2">
-<li><code>main.ts</code> 中引入</li>
-</ol>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">import axios from &#x27;axios&#x27;</span><br><span class="line">app.config.globalProperties.$axios = axios;  // (Vue2和Vue3有区别)</span><br></pre></td></tr></table></figure>
-
-<ol start="3">
-<li>在<code>Main.vue</code>中使用<code>axios</code></li>
-</ol>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;script lang=&quot;ts&quot; setup&gt;</span><br><span class="line">    import &#123; onMounted, ref &#125; from &#x27;vue&#x27;</span><br><span class="line">    import axios from &#x27;axios&#x27;</span><br><span class="line">    const item = &#123;</span><br><span class="line">    date: &#x27;2016-05-02&#x27;,</span><br><span class="line">    name: &#x27;Tom&#x27;,</span><br><span class="line">    address: &#x27;No. 189, Grove St, Los Angeles&#x27;,</span><br><span class="line">  &#125;</span><br><span class="line">    const tableData = ref(Array.from(&#123; length: 10 &#125;).fill(item))</span><br><span class="line">    const loadGet = () =&gt; &#123;</span><br><span class="line">        axios.get(&#x27;http://localhost:8080/user/list&#x27;).then(res =&gt; res.data).then(res=&gt;&#123;</span><br><span class="line">            console.log(res);</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">    const loadPost = () =&gt; &#123;</span><br><span class="line">        axios.post(&#x27;http://localhost:8080/user/listP&#x27;,&#123;&#125;).then(res =&gt; res.data).then(res=&gt;&#123;</span><br><span class="line">            console.log(res);</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">    onMounted(() =&gt; &#123;</span><br><span class="line">        //loadGet();</span><br><span class="line">        loadPost();</span><br><span class="line">    &#125;)</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>挂载：Vue将一个组件连接到DOM上的过程，从创建到显示在页面的过程</p>
-<p>.then是请求成功时的回调函数</p>
-</blockquote>
-<ol start="4">
-<li>在Common中新建一个跨域类</li>
-</ol>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">package com.wms.common;</span><br><span class="line"> import org.springframework.context.annotation.Configuration;</span><br><span class="line"> import org.springframework.web.servlet.config.annotation.CorsRegistry;</span><br><span class="line"> import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;</span><br><span class="line"> @Configuration</span><br><span class="line"> public class CorsConfig implements WebMvcConfigurer &#123;</span><br><span class="line"></span><br><span class="line">     @Override</span><br><span class="line">     public void addCorsMappings(CorsRegistry registry) &#123;</span><br><span class="line">         registry.addMapping(&quot;/**&quot;)</span><br><span class="line">                 //是否发送Cookie</span><br><span class="line">                 .allowCredentials(true)</span><br><span class="line">                 //放⾏哪些原始域</span><br><span class="line">                 .allowedOriginPatterns(&quot;*&quot;)</span><br><span class="line">                 .allowedMethods(new String[]&#123;&quot;GET&quot;, &quot;POST&quot;, &quot;PUT&quot;, &quot;DELETE&quot;&#125;)</span><br><span class="line">                 .allowedHeaders(&quot;*&quot;)</span><br><span class="line">                 .exposedHeaders(&quot;*&quot;);</span><br><span class="line">     &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
-
-<ol start="5">
-<li>修改了后端的<code>listP</code>方法</li>
-</ol>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">@PostMapping(&quot;/listP&quot;)</span><br><span class="line">    public List&lt;User&gt; listP(@RequestBody User user) &#123;</span><br><span class="line">        LambdaQueryWrapper&lt;User&gt; lambdaQueryWrapper = new LambdaQueryWrapper();</span><br><span class="line">        if(StringUtils.isNotBlank(user.getName()))&#123;</span><br><span class="line">            lambdaQueryWrapper.like(User::getName, user.getName());</span><br><span class="line">        &#125;</span><br><span class="line">        return userService.list(lambdaQueryWrapper);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>多加了 if，如果不加 if 的话，当<code>user.getName()</code>的返回值为 null（前端没有传body），会导致查不到数据</p>
-</blockquote>
-<h4 id="6-6-列表的基本展示"><a href="#6-6-列表的基本展示" class="headerlink" title="6.6 列表的基本展示"></a>6.6 列表的基本展示</h4><ol>
-<li>是如何展示出来的，用<code>element-plus</code>封装好的属性<code>prop</code></li>
-</ol>
-<ul>
-<li><pre><code>&lt;el-table :data=&quot;tableData&quot;
-            :header-cell-style=&quot;&#123; background:&#39;#f2f5fc&#39;, color:&#39;#555&#39;&#125;&quot;
-            border
-            &gt;
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">  `tableData`接收后端传来的数据</span><br><span class="line"></span><br><span class="line">- `&lt;el-table-column prop=&quot;id&quot; label=&quot;ID&quot; width=&quot;60&quot; /&gt;`</span><br><span class="line"></span><br><span class="line">&gt; 子组件el-table-column的 prop 属性对应对象（后端传来的）中的键名</span><br><span class="line"></span><br><span class="line">2. 实现UI界面上0 对应女，1 对应男的功能</span><br><span class="line"></span><br><span class="line">&lt;el-table-column prop=&quot;sex&quot; label=&quot;性别&quot; width=&quot;80&quot;&gt;</span><br><span class="line">    &lt;template #default=&quot;scope&quot;&gt;</span><br><span class="line">        &lt;el-tag</span><br><span class="line">            :type=&quot;scope.row.sex === 1 ? &#x27;primary&#x27; : &#x27;success&#x27;&quot;</span><br><span class="line">            disable-transitions&gt;</span><br><span class="line">           &#123;&#123;scope.row.sex === 1 ? &#x27;男&#x27; : &#x27;女&#x27; &#125;&#125;</span><br><span class="line">        &lt;/el-tag&gt;</span><br><span class="line">    &lt;/template&gt;</span><br><span class="line">&lt;/el-table-column&gt;</span><br><span class="line"></span><br><span class="line">&gt; 本质是具名插槽，名字为 default</span><br><span class="line">&gt;</span><br><span class="line">&gt; scope：是父组件的对象，可以通过它来访问父组件的属性</span><br><span class="line">&gt;</span><br><span class="line">&gt; 父组件和子组件**有包含关系即可**，不是必须要在两个.vue文件中</span><br><span class="line"></span><br><span class="line">3. 改变列表第一行颜色`header-cell-style`，加上边框`border`</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-&lt;el-table :data=&quot;tableData&quot;
-          :header-cell-style=&quot;&#123; background:&#39;#f2f5fc&#39;, color:&#39;#555&#39;&#125;&quot;
-          border
-          &gt;
-</code></pre>
-</li>
-</ul>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">4. 加上按钮</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<pre><code>        &lt;el-table-column prop=&quot;operate&quot; label=&quot;操作&quot;&gt;
-            &lt;el-button type=&quot;success&quot;&gt;编辑&lt;/el-button&gt;
-            &lt;el-button type=&quot;danger&quot;&gt;删除&lt;/el-button&gt;
-        &lt;/el-table-column&gt;
-</code></pre>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">5. 封装后端返回到前端的数据，修改后端接口代码</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>   @PostMapping(“&#x2F;listP”)<br>    public Result listP(@RequestBody User user) {<br>        LambdaQueryWrapper<User> lambdaQueryWrapper &#x3D; new LambdaQueryWrapper();<br>        if(StringUtils.isNotBlank(user.getName())){<br>            lambdaQueryWrapper.like(User::getName, user.getName());<br>        }<br>        return Result.suc(userService.list(lambdaQueryWrapper));<br>    }</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">6. 因为后端返回给前端的数据多封装了一层，所以前端拿数据时需要往下一层</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<pre><code>const loadPost = () =&gt; &#123;
-    axios.post(&#39;http://localhost:8080/user/listP&#39;,&#123;&#125;).then(res =&gt; res.data).then(res=&gt;&#123;
-        console.log(res);
-        if(res.code == 200)&#123;
-            tableData.value = res.data;
-        &#125;else&#123;
-            alert(&#39;获取数据失败&#39;)
-        &#125;
-    &#125;)
-&#125;
-</code></pre>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">#### 6.7  分页查询</span><br><span class="line"></span><br><span class="line">1. 使用 element-plus 中的分页组件</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>template部分：<br>        &lt;el-pagination<br>            :current-page&#x3D;”pageNum”<br>            :page-size&#x3D;”pageSize”<br>            :page-sizes&#x3D;”[5, 10, 20, 30]”<br>            :size&#x3D;”size”<br>            layout&#x3D;”total, sizes, prev, pager, next, jumper”<br>            :total&#x3D;”total”<br>            @size-change&#x3D;”handleSizeChange”<br>            @current-change&#x3D;”handleCurrentChange”<br>        &#x2F;&gt;</p>
-<p>script部分：<br>    <script lang="ts" setup><br>    import { onMounted, ref } from &#39;vue&#39;<br>    import axios from &#39;axios&#39;<br>    import type { ComponentSize } from &#39;element-plus&#39;</p>
-<pre><code>const tableData = ref()
-const pageSize = ref(10)
-const pageNum = ref(1)
-const total = ref(0)
-const size = ref&lt;ComponentSize&gt;(&#39;default&#39;)
-const loadGet = () =&gt; &#123;
-    axios.get(&#39;http://localhost:8080/user/list&#39;).then(res =&gt; res.data).then(res=&gt;&#123;
-        console.log(res);
-    &#125;)
-&#125;
-const loadPost = () =&gt; &#123;
-    axios.post(&#39;http://localhost:8080/user/listPageC1&#39;,&#123;pageSize:pageSize.value,pageNum:pageNum.value&#125;).then(res =&gt; res.data).then(res=&gt;&#123;
-        console.log(res);
-        if(res.code == 200)&#123;
-            tableData.value = res.data;
-            total.value = res.total;
-        &#125;else&#123;
-            alert(&#39;获取数据失败&#39;)
-        &#125;
-    &#125;)
-&#125;
-onMounted(() =&gt; &#123;
-    //loadGet();
-    loadPost();
-&#125;)
-const handleSizeChange = (val: number) =&gt; &#123;  // val是组件 el-pagination 自带的属性
-    console.log(`$&#123;val&#125; items per page`)
-    pageNum.value = 1
-    pageSize.value = val;
-    loadPost()
-&#125;
-const handleCurrentChange = (val: number) =&gt; &#123;
-    console.log(`current page: $&#123;val&#125;`)
-    pageNum.value = val;
-    loadPost()
-&#125;
-</code></pre>
-<p></script></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">&gt; 总结: element-plus 已经将属性定义好了,我需要做的就是把后端传来的数据传给这个属性即可</span><br><span class="line"></span><br><span class="line">#### 6.8 查询处理</span><br><span class="line"></span><br><span class="line">1. 搜索栏：</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<div style="margin:5px;">
-            <el-input v-model="name" placeholder="请输入名字" suffix-icon="el-icon-search" style="width: 200px;"  @keyup.enter="loadPost" ></el-input>
-            <el-icon><Search /></el-icon>
-            <el-button type="primary" style="margin-left: 5px;" @click="loadPost">查询</el-button>
-            <el-button type="success">重置</el-button>
-        </div>
-        
-<p>const name &#x3D; ref();<br>   const loadPost &#x3D; () &#x3D;&gt; {<br>        axios.post(‘<a href="http://localhost:8080/user/listPageC1',%7BpageSize:pageSize.value,pageNum:pageNum.value,param:%7Bname:name.value%7D%7D).then">http://localhost:8080/user/listPageC1&#39;,{pageSize:pageSize.value,pageNum:pageNum.value,param:{name:name.value}}).then</a>(res &#x3D;&gt; res.data).then(res&#x3D;&gt;{<br>            console.log(res);<br>            if(res.code &#x3D;&#x3D; 200){<br>                tableData.value &#x3D; res.data;<br>                total.value &#x3D; res.total;<br>            }else{<br>                alert(‘获取数据失败’)<br>            }<br>        })<br>    }</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">&gt; @keyup.enter=&quot;loadPost&quot;：回车事件</span><br><span class="line"></span><br><span class="line">实现流程：绑定响应式数据 name ，再将 name 传到后端去查询</span><br><span class="line"></span><br><span class="line">2. 下拉查询：</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>&lt;el-select<br>                v-model&#x3D;”sex”  &#x2F;&#x2F; 定义一个响应式属性 sex<br>                filterable<br>                placeholder&#x3D;”请选择性别”<br>                style&#x3D;”width: 240px; margin-left: 5px;”<br>            &gt;<br>            <el-option
-            v-for="item in sexs"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-            /><br>            </el-select></p>
-<p>const sex &#x3D; ref();<br>    const sexs &#x3D; [<br>  {<br>    value: ‘1’,<br>    label: ‘男’,<br>  },<br>  {<br>    value: ‘0’,<br>    label: ‘女’,<br>  }];<br>  axios.post(‘<a href="http://localhost:8080/user/listPageC1">http://localhost:8080/user/listPageC1</a>‘,<br>        {pageSize:pageSize.value,pageNum:pageNum.value,param:{name:name.value,sex:sex.value}}) &#x2F;&#x2F; 新加 sex，传到后端</p>
-<p>后端新增：<br>String sex &#x3D; (String) param.get(“sex”);<br>if (StringUtils.isNotBlank(sex)){<br>            lambdaQueryWrapper.eq(User::getSex,sex);<br>        }</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">3. 重置</span><br><span class="line"></span><br><span class="line">实现流程：将 sex 和 name 属性清空</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>&lt;el-button type&#x3D;”success” @click&#x3D;”resetParam”&gt;重置</el-button><br>   const resetParam &#x3D;() &#x3D;&gt; {<br>        name.value &#x3D; ‘’;<br>        sex.value &#x3D; ‘’;<br>    }</p>
-<pre><code>
-
-
-
-
-
-
-
-
-
-</code></pre>
-]]></content>
-      <tags>
-        <tag>项目</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>八股</title>
     <url>/2025/05/25/%E5%85%AB%E8%82%A1/</url>
     <content><![CDATA[<h1 id="八股"><a href="#八股" class="headerlink" title="八股"></a>八股</h1><h2 id="Java-基础"><a href="#Java-基础" class="headerlink" title="Java 基础"></a>Java 基础</h2><h3 id="什么是面向对象的设计思想？"><a href="#什么是面向对象的设计思想？" class="headerlink" title="什么是面向对象的设计思想？"></a>什么是面向对象的设计思想？</h3><p>OOP（ Object-Oriented Programming ），通过<strong>对象</strong>来组织和管理程序</p>
@@ -1275,5 +774,506 @@ const handleCurrentChange = (val: number) =&gt; &#123;
 <p><code>ps -T -p 1234</code></p>
 <hr>
 ]]></content>
+  </entry>
+  <entry>
+    <title>小程序项目</title>
+    <url>/2025/04/07/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E9%A1%B9%E7%9B%AE/</url>
+    <content><![CDATA[<h1 id="小程序项目"><a href="#小程序项目" class="headerlink" title="小程序项目"></a>小程序项目</h1><h3 id="1-近期目标"><a href="#1-近期目标" class="headerlink" title="1. 近期目标"></a>1. 近期目标</h3><p>微信小程序上传照片，包括微信开发者工具和后端</p>
+<p>看明哥学 Vue，多思考，碰到哪里不清楚，去看 Vue 开发者文档，弄懂</p>
+<p>前端的处理逻辑，有技术含量的东西</p>
+<p>后端的细节，经验  </p>
+<p>学习C++·，编程四大件（有技术含量的）</p>
+<p>更改 hexo 博客的样式</p>
+<hr>
+<h3 id="2-目前完成的工作"><a href="#2-目前完成的工作" class="headerlink" title="2. 目前完成的工作"></a>2. 目前完成的工作</h3><ol>
+<li>售后服务的上传表单功能(没有上传照片)   </li>
+<li>保养功能的上传照片功能，保存在云服务器的 <code>/var/www/html/images</code> 中, <code>url</code>也已经保存在数据库中</li>
+</ol>
+<hr>
+<h3 id="3-注意"><a href="#3-注意" class="headerlink" title="3. 注意"></a>3. 注意</h3><ol>
+<li>IDEA中删除东西时，小心<strong>默认点击</strong>的文件也被删除了</li>
+</ol>
+<hr>
+<h3 id="4-后端（Backend）"><a href="#4-后端（Backend）" class="headerlink" title="4. 后端（Backend）"></a>4. 后端（Backend）</h3><h4 id="4-0-什么是后端？"><a href="#4-0-什么是后端？" class="headerlink" title="4.0 什么是后端？"></a>4.0 什么是后端？</h4><p><em><strong>用户请求处理、逻辑处理、数据处理</strong></em></p>
+<h4 id="4-1-打包相关命令"><a href="#4-1-打包相关命令" class="headerlink" title="4.1  打包相关命令"></a>4.1  打包相关命令</h4><p>打 jar 包命令 <code>mvn package</code>  </p>
+<p>我的 jar 包放在 <code>/home</code>中  </p>
+<p>运行 jar 包命令 <code>java -jar 包名</code>  </p>
+<h4 id="4-2-创建后端项目"><a href="#4-2-创建后端项目" class="headerlink" title="4.2 创建后端项目"></a>4.2 创建后端项目</h4><ol>
+<li>创建新文件夹并在IDEA中打开</li>
+<li><code>New module</code></li>
+<li><code>Spring Initiallizr</code></li>
+</ol>
+<blockquote>
+<p>取项目名 选择JDK版本 更改 Group </p>
+<p>勾选依赖：Lombok、Spring Web、MySQL Driver  </p>
+</blockquote>
+<ol start="4">
+<li>删掉项目里一些自动生成且不需要的文件  </li>
+<li>加入<code>mybatis-plus</code>支持</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;com.baomidou&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;mybatis-plus-boot-starter&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;3.5.0&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;  // 也可以去官网寻找,这个是springboot2版本</span><br></pre></td></tr></table></figure>
+
+<p><a href="https://baomidou.com/">MyBatis-plus官网</a>  </p>
+<ol start="6">
+<li>新建一个 HelloController 测试一下</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">@RestController  // 标识这个类是一个REST控制器，控制器返回的对象会自动化序列化为JSON格式</span><br><span class="line">public class HelloController &#123;</span><br><span class="line">    @GetMapping // 处理客户端发送来的GET请求</span><br><span class="line">    public String hello()&#123;</span><br><span class="line">        return &quot;hello wms&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>REST控制器：用于处理和响应RESTful Web服务请求的组件，允许客户端通过HTTP协议与服务器进行通信</p>
+</blockquote>
+<ol start="7">
+<li>创建数据库实例</li>
+</ol>
+<blockquote>
+<p>数据库在很多情况下需要<em><strong>刷新</strong></em>才能显示</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">CREATE TABLE USER（表名）</span><br><span class="line">(</span><br><span class="line">    id INT AUTO_INCREMENT COMMENT &#x27;主键&#x27; </span><br><span class="line">    PRIMARY KEY,</span><br><span class="line">    NO VARCHAR(20) NULL COMMENT &#x27;账号&#x27;,</span><br><span class="line">    NAME VARCHAR(100) NOT NULL COMMENT &#x27;名字&#x27;,</span><br><span class="line">    PASSWORD VARCHAR(20) NOT NULL COMMENT &#x27;密码&#x27;,</span><br><span class="line">    age INT NULL,</span><br><span class="line">    sex INT NULL COMMENT &#x27;性别&#x27;,</span><br><span class="line">    phone VARCHAR(20) NULL COMMENT &#x27;电话&#x27;,</span><br><span class="line">    role_id INT NULL COMMENT &#x27;角色 0超级管理员, 1管理员，2普通账号&#x27;,</span><br><span class="line">    isValid VARCHAR(4) DEFAULT &#x27;Y&#x27; NULL COMMENT &#x27;是否有效，Y有效，其他无效&#x27;</span><br><span class="line">)</span><br><span class="line">    CHARSET = utf8;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注意：（）中的最后一行不要有逗号，这是语法错误</p>
+</blockquote>
+<ol start="8">
+<li>配置 <code>yml</code>文件，将自带的 <code>properties</code> 配置文件改为 <code>yml</code></li>
+</ol>
+<blockquote>
+<p>作用：连接数据库</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">server:</span><br><span class="line">  port: 8080  // 这个后端应用程序将运行在本地的 8080 端口上</span><br><span class="line">  servlet:</span><br><span class="line">    context-path: /</span><br><span class="line"></span><br><span class="line">spring:</span><br><span class="line">  datasource:</span><br><span class="line">    driver-class-name: com.mysql.cj.jdbc.Driver</span><br><span class="line">    url: jdbc:mysql://localhost:3306/wms02(数据库名)?serverTimezone=Asia/Shanghai</span><br><span class="line">    username: root</span><br><span class="line">    password: 123456</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>3306 是 Mysql 数据库的默认端口</p>
+</blockquote>
+<ol start="9">
+<li>编写测试代码</li>
+</ol>
+<ul>
+<li>创建实体类</li>
+</ul>
+<blockquote>
+<p>注意要对应数据库中的字段 </p>
+<p>数据库和 JAVA 对应字段规则：JAVA中的大写对应数据库中的_</p>
+<blockquote>
+<p>数据库中有下划线，JAVA中用大写</p>
+<p>数据库中是大写，JAVA中用小写</p>
+</blockquote>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">@Entity  // 表示其是JPA的实体类，会被映射到数据库中的一张表</span><br><span class="line">@Table(name = &quot;xxx&quot;) // 选择表的名字，没有这个的话，会自动根据类名要求你有这个表。标记了name也可能报错，最好的办法就是听它的（创建一个它要的表名）</span><br><span class="line">@Data  // 是 Lombok 提供的一个注解，自动生成getter、setter、toString()等方法</span><br><span class="line">public class User &#123;</span><br><span class="line">	@Id  // 标记实体的主键</span><br><span class="line">    private int id;</span><br><span class="line">    private String no;</span><br><span class="line">    private String name;</span><br><span class="line">    private String password;</span><br><span class="line">    private int sex;</span><br><span class="line">    private int roleId;</span><br><span class="line">    private String isvalid;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>@Entity和Table需要新增 pom 依赖</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">  &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">  &lt;artifactId&gt;spring-boot-starter-data-jpa&lt;/artifactId&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure></blockquote>
+<ul>
+<li>创建mapper接口</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">@Mapper</span><br><span class="line">public interface UserMapper extends BaseMapper&lt;User&gt; &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>控制反转和依赖注入是什么？</p>
+<blockquote>
+<p>控制反转（IoC）：把对象的创建交给Spring容器来控制，称为Bean</p>
+</blockquote>
+<blockquote>
+<p>依赖注入：将一个类依赖的对象（Bean）注入进去，而不是自己创建</p>
+</blockquote>
+<p>@Mapper：将这个接口注册为<strong>Bean</strong>，后续就可以在Service层中<strong>依赖注入</strong>这个Mapper接口</p>
+<p>BaseMapper<User>：Mybatis-plus提供的一个通用Mapper接口，提供了许多常用的CRUD操作，作用：UserMapper可以直接使用与User实体相关的CRUD操作</p>
+</blockquote>
+<ul>
+<li><p>创建service接口</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">public interface UserService extends IService&lt;User&gt; &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>Iservice<User>：Mybatis-plus提供的通用接口，提供了一系列数据库的CRUD操作方法</p>
+<p><strong>为什么需要接口和实现类？</strong></p>
+<blockquote>
+<p>接口定义了类所必须实现的一组方法，但不关心这些方法是如何具体实现的</p>
+</blockquote>
+<blockquote>
+<p>实现类具体实现了接口中的方法，<strong>实现了特定业务</strong></p>
+</blockquote>
+<blockquote>
+<p>好处：解耦</p>
+</blockquote>
+</blockquote>
+</li>
+<li><p>创建service实现类</p>
+</li>
+</ul>
+<p>新建一个impl文件夹，创建UserServiceImpl</p>
+  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">@Service</span><br><span class="line">public class UserServiceImpl extends ServiceImpl&lt;UserMapper, User&gt; implements UserService &#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>@Service：将这个类注册为Spring容器中的一个Bean，之后可以依赖注入</p>
+<p>ServiceImpl&lt;UserMapper,User&gt;：Mybatis-Plus提供的通用服务实现类，作用：UserServiceImpl（继承它的类）可以直接使用CRUD操作。</p>
+<p>ServiceImpl通过UserMapper，提供对数据库的访问（特定业务）</p>
+</blockquote>
+<ul>
+<li>在HelloCroller中测试</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">@RequestMapping(&quot;/user&quot;)</span><br><span class="line">@RestController</span><br><span class="line">public class HelloController &#123;</span><br><span class="line">    @GetMapping</span><br><span class="line">    public String hello()&#123;</span><br><span class="line">        return &quot;hello wms&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">	</span><br><span class="line">	//新增测试代码</span><br><span class="line">    @Autowired  // 自动装配，自动注入UserService实例</span><br><span class="line">    private UserService userService;</span><br><span class="line"></span><br><span class="line">    @GetMapping(&quot;/list&quot;)</span><br><span class="line">    public List&lt;User&gt; list()&#123;</span><br><span class="line">        return userService.list();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>也可以自己去创建一个UserService</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// HelloCtroller中</span><br><span class="line">@GetMapping(&quot;/list&quot;)</span><br><span class="line">    public List&lt;User&gt; list()&#123;</span><br><span class="line">        return userService.listAll();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">// UserService中去声明</span><br><span class="line">public interface UserService extends IService&lt;User&gt; &#123;</span><br><span class="line">    List&lt;User&gt; listAll();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// UserServiceImpl 中去实现</span><br><span class="line">@Service</span><br><span class="line">public class UserServiceImpl extends ServiceImpl&lt;UserMapper, User&gt; implements UserService &#123;</span><br><span class="line">    @Resource  // 也是用于依赖注入</span><br><span class="line">    private UserMapper userMapper;</span><br><span class="line">    @Override  // 表示其是对接口方法的重写</span><br><span class="line">    public List&lt;User&gt; listAll() &#123;</span><br><span class="line">        return userMapper.listAll();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//UserMapper 中</span><br><span class="line">@Mapper</span><br><span class="line">public interface UserMapper extends BaseMapper&lt;User&gt; &#123;</span><br><span class="line">    List&lt;User&gt; listAll();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>下一步，去resource中新建文件夹Mapper并在其中新建文件UserMapper.xml  </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;!DOCTYPE mapper PUBLIC &quot;-//mybatis.org//DTD Mapper 3.0//EN&quot;</span><br><span class="line">        &quot;http://mybatis.org/dtd/mybatis-3-mapper.dtd&quot;&gt;</span><br><span class="line">&lt;mapper namespace=&quot;com.wms.mapper.UserMapper&quot;&gt;</span><br><span class="line">    &lt;select id=&quot;listAll&quot; parameterType=&quot;com.wms.entity.User&quot;&gt;</span><br><span class="line">        select * from  user</span><br><span class="line">    &lt;/select&gt;</span><br><span class="line">&lt;/mapper&gt;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>作用：为UserMapper接口提供了一个SQL查询操作 listAll</p>
+<p>listAll 会执行 select * from  user 语句，从 user表中查询数据</p>
+<p>查询结果会自动映射到 com.wms.entity.User 类型的对象并返回调用方</p>
+<blockquote>
+<p>映射：在Mybatis中，映射指的是将SQL查询的结果集转换成 Java 对象的过程</p>
+</blockquote>
+<p>namespace：作用：将 XML 中定义的 SQL 语句和 Java 接口中的方法绑定</p>
+<p>parameterType：作用：制定了 SQL 操作所接收的参数类型</p>
+</blockquote>
+<p>运行测试。。。</p>
+<h4 id="4-3-实现增删改查"><a href="#4-3-实现增删改查" class="headerlink" title="4.3 实现增删改查"></a>4.3 实现增删改查</h4><ol>
+<li>新增</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">@PostMapping(&quot;/save&quot;)</span><br><span class="line">    public boolean save(@RequestBody User user)&#123;</span><br><span class="line">        return userService.save(user);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>@RequestBody：将HTTP请求的主体（body）映射到方法的参数上，在这里是将去请求的的 JSON 数据转换为 User 类型的对象</p>
+<p>GET：请求的数据通过 URL 传递</p>
+<p>POST：请求的数据通过请求体（body）发送，而不是通过 URL ，请求体中可以包含表单数据、JSON数据等</p>
+</blockquote>
+<ol start="2">
+<li>修改</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">@PostMapping(&quot;/mod&quot;)</span><br><span class="line">    public boolean mod(@RequestBody User user)&#123;</span><br><span class="line">        return userService.updateById(user);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<ol start="3">
+<li>新增或修改</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">@PostMapping(&quot;/saveOrMod&quot;)</span><br><span class="line">   public boolean saveOrMod(@RequestBody User user)&#123;</span><br><span class="line">       return userService.saveOrUpdate(user);</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<ol start="4">
+<li>删除</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">@GetMapping(&quot;/delete&quot;)</span><br><span class="line">    public boolean delete(Integer id)&#123;</span><br><span class="line">        return userService.removeById(id);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<ol start="5">
+<li>查询（模糊、匹配）</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">@PostMapping(&quot;/listP&quot;)</span><br><span class="line">   public List&lt;User&gt; listP(@RequestBody User user)&#123;</span><br><span class="line">       LambdaQueryWrapper&lt;User&gt; lambdaQueryWrapper = new LambdaQueryWrapper();</span><br><span class="line">       lambdaQueryWrapper.like(User::getName,user.getName());</span><br><span class="line">       return userService.list(lambdaQueryWrapper);</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>作用：查询数据库中与请求体的 User 对象的 name 属性匹配的所有对象</p>
+<p>LambdaQueryWrapper是 Mybatis-Plus 提供的一个工具类，用于构建数据库查询条件，作用：就像是写了SQL查询语句一样</p>
+<p>lambdaQueryWrapper.like：模糊匹配，.equal就是完全匹配</p>
+</blockquote>
+<ol start="6">
+<li>使用Postman时注意</li>
+</ol>
+<p><img src="D:\xmind\Typora\image\postman.png"></p>
+<h4 id="4-4-分页的实现"><a href="#4-4-分页的实现" class="headerlink" title="4.4 分页的实现"></a>4.4 分页的实现</h4><ol>
+<li>封装分页请求的参数：新建和 controller 平级的文件夹 common ，并创建 QueryPageParam 文件</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">@Data</span><br><span class="line">public class QueryPageParam &#123;</span><br><span class="line">    private static int PAGE_SIZE = 20;</span><br><span class="line">    private static int PAGE_NUM = 1;</span><br><span class="line"></span><br><span class="line">    private int pageSize=PAGE_SIZE;</span><br><span class="line">    private int pageNum=PAGE_NUM;</span><br><span class="line"></span><br><span class="line">    private HashMap param;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>静态方法（static）：不依赖于对象进行访问，方便在没有创建对象的情况下进行调用  </p>
+<p>pageNum：页数</p>
+<p>pafeSize：每页的数据量  </p>
+<p><code>offset = (pageNum - 1) * pageSize</code>：表示从数据源中查询结果时，跳过了多少条数据</p>
+</blockquote>
+<p>再在 HelloController 中新增  </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">@PostMapping(&quot;/listPage&quot;)</span><br><span class="line">public List&lt;User&gt; listPage(@RequestBody QueryPageParam query)&#123;</span><br><span class="line">    System.out.println(query);</span><br><span class="line"></span><br><span class="line">    System.out.println(&quot;num===&quot; + query.getPageNum());</span><br><span class="line">    System.out.println(&quot;size===&quot; + query.getPageSize());</span><br><span class="line"></span><br><span class="line">    HashMap param = query.getParam();</span><br><span class="line">    System.out.println(&quot;name===&quot; + param.get(&quot;name&quot;));</span><br><span class="line">    System.out.println(&quot;no===&quot; + param.get(&quot;no&quot;));</span><br><span class="line"></span><br><span class="line">    return null;</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>添加分页拦截器</li>
+</ol>
+<p>在 common 中创建 MybatisPlusConfig 文件  </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">@Configuration</span><br><span class="line">public class MybatisPlusConfig &#123;</span><br><span class="line">    @Bean</span><br><span class="line">    public MybatisPlusInterceptor mybatisPlusInterceptor() &#123;</span><br><span class="line">        MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();</span><br><span class="line">        interceptor.addInnerInterceptor(new PaginationInnerInterceptor(DbType.MYSQL));</span><br><span class="line">        return interceptor;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>@Configuration：MybatisPlusConfig 是一个配置类，里面定义的 Bean 可以被 Spring 管理</p>
+<p>作用：只需传入当前页码和每页显示的数量，MyBatis Plus 会<strong>自动生成</strong>适当的 SQL 查询来获取相应的数据。</p>
+</blockquote>
+<ol start="3">
+<li>在HelloController中利用 MybatisPlus 提供的封装对象 <strong>Page</strong> 去分页</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"> @PostMapping(&quot;/listPage&quot;)</span><br><span class="line">    public List&lt;User&gt; listPage(@RequestBody QueryPageParam query)&#123;</span><br><span class="line"></span><br><span class="line">        HashMap param = query.getParam();</span><br><span class="line">        String name = (String)param.get(&quot;name&quot;);</span><br><span class="line"></span><br><span class="line">        Page&lt;User&gt; page = new Page();  // Page&lt;User&gt;：MybatisPlus 提供的分页对象</span><br><span class="line">        page.setPages(query.getPageNum());</span><br><span class="line">        page.setSize(query.getPageSize());</span><br><span class="line"></span><br><span class="line">        LambdaQueryWrapper&lt;User&gt; lambdaQueryWrapper = new LambdaQueryWrapper();</span><br><span class="line">        lambdaQueryWrapper.like(User::getName,name);</span><br><span class="line"></span><br><span class="line">        IPage result = userService.page(page,lambdaQueryWrapper);  // MybatisPlus提供的接口，用于封装分页查询的结果</span><br><span class="line">        System.out.println(&quot;total===&quot; + result.getTotal());  // 打印总记录数</span><br><span class="line">        return result.getRecords();  // 返回当前页的用户记录</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>也可以自己在 HelloController中去定义一个userService的方法，然后去UserService声明方法，UserServiceImpl去实现，再在UserMapper中声明方法，最后在xml中写SQL语句</li>
+</ol>
+<blockquote>
+<p>注意： UserServiceImpl 中需要依赖注入UserMapper，使用它的方法</p>
+</blockquote>
+<h4 id="4-5-返给前端数据的封装"><a href="#4-5-返给前端数据的封装" class="headerlink" title="4.5 返给前端数据的封装"></a>4.5 返给前端数据的封装</h4><ol>
+<li>在 common 中新建 Result 类</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">@Data</span><br><span class="line">public class Result &#123;</span><br><span class="line">    private int code;  // 编码200/400</span><br><span class="line">    private String msg;  // 成功/失败</span><br><span class="line">    private Long total;  // 总记录数</span><br><span class="line">    private Object data;  // 数据</span><br><span class="line"></span><br><span class="line">    public static Result fail()&#123;</span><br><span class="line">        return result(400, &quot;失败&quot;, 0L, null);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static Result suc()&#123;</span><br><span class="line">        return result(200, &quot;成功&quot;, 0L, null);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static Result suc(Object data)&#123;</span><br><span class="line">        return result(200, &quot;成功&quot;, 0L, data);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static Result suc(Object data, Long total)&#123;</span><br><span class="line">        return result(200, &quot;成功&quot;, total, data);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    private static Result result(int code,String msg,Long total,Object data)&#123;</span><br><span class="line">        Result res = new Result();</span><br><span class="line">        res.setCode(code);</span><br><span class="line">        res.setMsg(msg);</span><br><span class="line">        res.setTotal(total);</span><br><span class="line">        res.setData(data);</span><br><span class="line">        return res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>将 HelloController 中的返回值类型改为我自己创建的 Result 类</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">@PostMapping(&quot;/listPageC1&quot;)</span><br><span class="line">    public Result listPageC1(@RequestBody QueryPageParam query) &#123;</span><br><span class="line"></span><br><span class="line">        HashMap param = query.getParam();</span><br><span class="line">        String name = (String) param.get(&quot;name&quot;);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        Page&lt;User&gt; page = new Page();  // Page&lt;User&gt;：MybatisPlus 提供的分页对象</span><br><span class="line">        page.setPages(query.getPageNum());</span><br><span class="line">        page.setSize(query.getPageSize());</span><br><span class="line"></span><br><span class="line">/*        LambdaQueryWrapper&lt;User&gt; lambdaQueryWrapper = new LambdaQueryWrapper();</span><br><span class="line">        lambdaQueryWrapper.like(User::getName,name);*/</span><br><span class="line"></span><br><span class="line">        IPage result = userService.pageC(page);</span><br><span class="line">        System.out.println(&quot;total===&quot; + result.getTotal());  // 打印总记录数</span><br><span class="line">        return Result.suc(result.getRecords(),result.getTotal());</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>利用框架提供的方法：<code>ResponseEntity </code>类</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">@PostMapping(&quot;/afterSale&quot;)</span><br><span class="line">public ResponseEntity&lt;Void&gt; save(@RequestBody AfterSale afterSale)&#123;</span><br><span class="line">    afterSaleService.save(afterSale);</span><br><span class="line">    return ResponseEntity.ok().build();  // 生成一个状态码 200 的响应，没有响应体</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>ResponseEntity：Spring Web中的一个类，处理 HTTP 响应的一个重要类</p>
+</blockquote>
+<hr>
+<h3 id="5-微信开发者工具"><a href="#5-微信开发者工具" class="headerlink" title="5. 微信开发者工具"></a>5. 微信开发者工具</h3><blockquote>
+<p>此节目的：知道这些配置在哪，然后去<a href="https://developers.weixin.qq.com/doc/">微信开发者文档</a>查看细节  </p>
+<blockquote>
+<p>前端<strong>界面设计</strong>方法论：要有<strong>块</strong>的概念，每一块都用 view <strong>包裹</strong>起来，作用：更好布局</p>
+<blockquote>
+<p>父组件看自己里面包含的东西就是看作一个块</p>
+</blockquote>
+<p>微信小程序的调试器的Wxml左边的按钮可以看到界面上<strong>DOM的布局</strong>，方便进行<strong>调试</strong>（网页上也可以通过这个按钮去看布局）</p>
+</blockquote>
+</blockquote>
+<h4 id="5-1-全局配置"><a href="#5-1-全局配置" class="headerlink" title="5.1 全局配置"></a>5.1 <strong>全局配置</strong></h4><p><code>tabBar</code>：底部栏</p>
+<blockquote>
+<p>照片的路径 syntax</p>
+<p>本地：&#x2F;images（自己创建的文件夹）&#x2F;xxx</p>
+<p>远程服务器： <a href="http://47.109.96.127/images/hanji1.png">http://47.109.96.127/images/hanji1.png</a></p>
+</blockquote>
+<h4 id="5-2-页面配置"><a href="#5-2-页面配置" class="headerlink" title="5.2 页面配置"></a>5.2 <strong>页面配置</strong></h4><blockquote>
+<p>在<strong>window</strong>属性里配置</p>
+</blockquote>
+<p><code>navigationBarTitleText</code>：页标题  </p>
+<p><code>navigationBarBackgroundColor</code>：导航栏背景颜色</p>
+<h4 id="5-3-组件"><a href="#5-3-组件" class="headerlink" title="5.3 组件"></a>5.3 组件</h4><p><code>swiper</code>：滑块视图容器  </p>
+<p><code>image</code>：图片 </p>
+<blockquote>
+<p>mode：防止图片变形</p>
+</blockquote>
+<p><code>button</code>：按钮  </p>
+<p><code>input</code>：输入框</p>
+<blockquote>
+<p>bindinput&#96;&#x3D;“xxx（自定义函数）”：作用：键盘输入时或内容改变时触发这个函数</p>
+</blockquote>
+<h4 id="5-4-重要属性"><a href="#5-4-重要属性" class="headerlink" title="5.4 重要属性"></a>5.4 重要属性</h4><p><code>width：100%  </code></p>
+<p><code>height：100vh</code>：设置元素高度，1vh等于视口高度的1%   </p>
+<p><code>text-align：center</code>：水平居中对齐文本  </p>
+<p><code>border-bottom: darkgrey solid 1px</code>：边框颜色和厚度</p>
+<h4 id="5-5-API"><a href="#5-5-API" class="headerlink" title="5.5 API"></a>5.5 API</h4><p><code>wx.navigateTo</code>：保存当前界面，跳转到应用内的某个界面，但是不能跳转到<code>tabbar</code>页面</p>
+<blockquote>
+<p>可以通过将父包裹元素设置上事件，来实现<strong>被包裹的元素的点击事件都为它</strong> </p>
+</blockquote>
+<p><code>wx.showToast</code>：在页面上显示一个提示框  </p>
+<p><code>wx.request</code>：发送 HTTPS 网络请求</p>
+<h4 id="5-6-使用-iconfont-的步骤"><a href="#5-6-使用-iconfont-的步骤" class="headerlink" title="5.6 使用 iconfont 的步骤"></a>5.6 使用 iconfont 的步骤</h4><ol>
+<li>去官网选择图标加入项目</li>
+<li>复制代码去浏览器打开  </li>
+<li>创建一个和 page <strong>平级</strong>的文件夹 styles  </li>
+<li>在 styles 里创建 iconfont.wxss 文件，将第二步复制的代码粘贴进去  </li>
+<li>在 app.wxss 里导入</li>
+</ol>
+<p><code>@import &quot;/styles/iconfont.wxss&quot;;</code></p>
+<h4 id="5-7-框架接口"><a href="#5-7-框架接口" class="headerlink" title="5.7 框架接口"></a>5.7 框架接口</h4><p><code>App</code>：在<code>app.js</code>中，作用：注册小程序，指定小程序的生命周期回调等  </p>
+<p><code>Page</code>：在<code>页面.js</code>中，作用：注册页面，指定页面的初始数据、生周期回调、事件处理函数等  </p>
+<blockquote>
+<p><code>data</code>：是响应式的，作用：存储和管理数据 </p>
+<blockquote>
+<p>使用 <strong><code>setData</code></strong> 方法，可以将变化的数据自动渲染到前端页面</p>
+</blockquote>
+</blockquote>
+<h4 id="5-8-实现上传表单功能"><a href="#5-8-实现上传表单功能" class="headerlink" title="5.8 实现上传表单功能"></a>5.8 实现上传表单功能</h4><ol>
+<li>在<code>data</code>中定义变量</li>
+<li>在<code>input</code>组件的属性<code>bindinput</code>绑定函数，在函数中编写<strong>更新页面数据的方法</strong>（<code>setData</code>），完成响应式</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">onModelInput(event) &#123;</span><br><span class="line">  this.setData(&#123;</span><br><span class="line">    model: event.detail.value</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>在<code>button</code>组件绑定的方法中实现<code>request</code></li>
+</ol>
+<blockquote>
+<p>预处理：通过解构赋值取出变量，并检查是否表单都有输入，没有的话进行提示</p>
+<blockquote>
+<p>解构赋值：直接对多个变量同时赋值</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">submitForm()&#123;</span><br><span class="line"> const &#123;model, serial,fault&#125; = this.data;</span><br><span class="line"> if(!model || !serial || !fault)&#123;</span><br><span class="line">   wx.showToast(&#123;</span><br><span class="line">     title: &#x27;请填写完整信息&#x27;,</span><br><span class="line">     icon: &#x27;none&#x27;</span><br><span class="line">   &#125;)</span><br><span class="line">   return;  // 如果满足条件，则退出，不执行后面的 request</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure></blockquote>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">wx.request(&#123;</span><br><span class="line">      url:&#x27;http://localhost:8080/user/afterSale&#x27;,</span><br><span class="line">      method:&#x27;POST&#x27;,</span><br><span class="line">      header:&#123;</span><br><span class="line">        &#x27;Content-Type&#x27;:&#x27;application/json&#x27;</span><br><span class="line">      &#125;,</span><br><span class="line">      data:&#123;</span><br><span class="line">        model:model,</span><br><span class="line">        serial:serial,</span><br><span class="line">        fault:fault</span><br><span class="line">      &#125;,</span><br><span class="line">      success:(res) =&gt;&#123;  // 这是一个成功回调函数</span><br><span class="line">        if(res.statusCode === 200)&#123;</span><br><span class="line">          wx.showToast(&#123;</span><br><span class="line">            title:&#x27;提交成功&#x27;,</span><br><span class="line">            icon:&#x27;success&#x27;  // 显示的图标</span><br><span class="line">          &#125;)</span><br><span class="line">        &#125;else&#123;</span><br><span class="line">          wx.showToast(&#123;</span><br><span class="line">            title:&#x27;提交失败&#x27;,</span><br><span class="line">            icon:&#x27;none&#x27;</span><br><span class="line">          &#125;)</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;)</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="6-后台管理系统（Vue）"><a href="#6-后台管理系统（Vue）" class="headerlink" title="6. 后台管理系统（Vue）"></a>6. 后台管理系统（Vue）</h3><h4 id="6-1-页面布局的搭建"><a href="#6-1-页面布局的搭建" class="headerlink" title="6.1 页面布局的搭建"></a>6.1 页面布局的搭建</h4><ol>
+<li>在<code>components</code>里创建新的<code>.vue</code>文件，加入element-plus 提供的布局代码</li>
+<li>在<code>App.vue</code>中导入，在<code>template</code>中使用这个标签</li>
+</ol>
+<h4 id="6-2-页面布局的拆分"><a href="#6-2-页面布局的拆分" class="headerlink" title="6.2 页面布局的拆分"></a>6.2 页面布局的拆分</h4><ul>
+<li>将<code>elment-plus</code>给的代码分块，分别放进不同的<code>.vue</code>文件，再在剪切的地方引入（6.1中的两步）组件</li>
+</ul>
+<blockquote>
+<p><code>element-plus</code>中的<strong>图标需要再次引入</strong></p>
+</blockquote>
+<h4 id="6-3-编写头部页面"><a href="#6-3-编写头部页面" class="headerlink" title="6.3 编写头部页面"></a>6.3 编写头部页面</h4><blockquote>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;script lang=&quot;ts&quot; setup&gt;  // 有 setup 表示这是组合式 API，相比选项式 API 有区别</span><br><span class="line"> const toUser = () =&gt; &#123;</span><br><span class="line">     console.log(&quot;sss&quot;); // 使用 console.log</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure></blockquote>
+<h4 id="6-4-导航栏菜单的伸缩"><a href="#6-4-导航栏菜单的伸缩" class="headerlink" title="6.4 导航栏菜单的伸缩"></a>6.4 导航栏菜单的伸缩</h4><p>目标：一个子组件事件传到另外一个子组件，<strong>通过父组件去传递</strong></p>
+<ol>
+<li>$emit 触发自定义事件，作用：子组件事件传递到父组件事件</li>
+</ol>
+<blockquote>
+<p>子组件：&lt;button @click&#x3D;”$emit(‘someEvent’)”&gt;Click Me</button></p>
+<p>父组件：定义名为 someEvent 的事件</p>
+</blockquote>
+<ol start="2">
+<li><p>父组件传递给子组件用<code>props</code></p>
+</li>
+<li><p>在父组件中，将从子组件传来的事件和传到另一个子组件属性关联起来，再在事件中做逻辑处理</p>
+</li>
+</ol>
+<h4 id="6-5-安装axios与跨域处理"><a href="#6-5-安装axios与跨域处理" class="headerlink" title="6.5 安装axios与跨域处理"></a>6.5 安装axios与跨域处理</h4><ol>
+<li>安装 <code>axios</code></li>
+</ol>
+<p><code>npm install axios --save</code></p>
+<ol start="2">
+<li><code>main.ts</code> 中引入</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">import axios from &#x27;axios&#x27;</span><br><span class="line">app.config.globalProperties.$axios = axios;  // (Vue2和Vue3有区别)</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>在<code>Main.vue</code>中使用<code>axios</code></li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;script lang=&quot;ts&quot; setup&gt;</span><br><span class="line">    import &#123; onMounted, ref &#125; from &#x27;vue&#x27;</span><br><span class="line">    import axios from &#x27;axios&#x27;</span><br><span class="line">    const item = &#123;</span><br><span class="line">    date: &#x27;2016-05-02&#x27;,</span><br><span class="line">    name: &#x27;Tom&#x27;,</span><br><span class="line">    address: &#x27;No. 189, Grove St, Los Angeles&#x27;,</span><br><span class="line">  &#125;</span><br><span class="line">    const tableData = ref(Array.from(&#123; length: 10 &#125;).fill(item))</span><br><span class="line">    const loadGet = () =&gt; &#123;</span><br><span class="line">        axios.get(&#x27;http://localhost:8080/user/list&#x27;).then(res =&gt; res.data).then(res=&gt;&#123;</span><br><span class="line">            console.log(res);</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">    const loadPost = () =&gt; &#123;</span><br><span class="line">        axios.post(&#x27;http://localhost:8080/user/listP&#x27;,&#123;&#125;).then(res =&gt; res.data).then(res=&gt;&#123;</span><br><span class="line">            console.log(res);</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">    onMounted(() =&gt; &#123;</span><br><span class="line">        //loadGet();</span><br><span class="line">        loadPost();</span><br><span class="line">    &#125;)</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>挂载：Vue将一个组件连接到DOM上的过程，从创建到显示在页面的过程</p>
+<p>.then是请求成功时的回调函数</p>
+</blockquote>
+<ol start="4">
+<li>在Common中新建一个跨域类</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">package com.wms.common;</span><br><span class="line"> import org.springframework.context.annotation.Configuration;</span><br><span class="line"> import org.springframework.web.servlet.config.annotation.CorsRegistry;</span><br><span class="line"> import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;</span><br><span class="line"> @Configuration</span><br><span class="line"> public class CorsConfig implements WebMvcConfigurer &#123;</span><br><span class="line"></span><br><span class="line">     @Override</span><br><span class="line">     public void addCorsMappings(CorsRegistry registry) &#123;</span><br><span class="line">         registry.addMapping(&quot;/**&quot;)</span><br><span class="line">                 //是否发送Cookie</span><br><span class="line">                 .allowCredentials(true)</span><br><span class="line">                 //放⾏哪些原始域</span><br><span class="line">                 .allowedOriginPatterns(&quot;*&quot;)</span><br><span class="line">                 .allowedMethods(new String[]&#123;&quot;GET&quot;, &quot;POST&quot;, &quot;PUT&quot;, &quot;DELETE&quot;&#125;)</span><br><span class="line">                 .allowedHeaders(&quot;*&quot;)</span><br><span class="line">                 .exposedHeaders(&quot;*&quot;);</span><br><span class="line">     &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>修改了后端的<code>listP</code>方法</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">@PostMapping(&quot;/listP&quot;)</span><br><span class="line">    public List&lt;User&gt; listP(@RequestBody User user) &#123;</span><br><span class="line">        LambdaQueryWrapper&lt;User&gt; lambdaQueryWrapper = new LambdaQueryWrapper();</span><br><span class="line">        if(StringUtils.isNotBlank(user.getName()))&#123;</span><br><span class="line">            lambdaQueryWrapper.like(User::getName, user.getName());</span><br><span class="line">        &#125;</span><br><span class="line">        return userService.list(lambdaQueryWrapper);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>多加了 if，如果不加 if 的话，当<code>user.getName()</code>的返回值为 null（前端没有传body），会导致查不到数据</p>
+</blockquote>
+<h4 id="6-6-列表的基本展示"><a href="#6-6-列表的基本展示" class="headerlink" title="6.6 列表的基本展示"></a>6.6 列表的基本展示</h4><ol>
+<li>是如何展示出来的，用<code>element-plus</code>封装好的属性<code>prop</code></li>
+</ol>
+<ul>
+<li><pre><code>&lt;el-table :data=&quot;tableData&quot;
+            :header-cell-style=&quot;&#123; background:&#39;#f2f5fc&#39;, color:&#39;#555&#39;&#125;&quot;
+            border
+            &gt;
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">  `tableData`接收后端传来的数据</span><br><span class="line"></span><br><span class="line">- `&lt;el-table-column prop=&quot;id&quot; label=&quot;ID&quot; width=&quot;60&quot; /&gt;`</span><br><span class="line"></span><br><span class="line">&gt; 子组件el-table-column的 prop 属性对应对象（后端传来的）中的键名</span><br><span class="line"></span><br><span class="line">2. 实现UI界面上0 对应女，1 对应男的功能</span><br><span class="line"></span><br><span class="line">&lt;el-table-column prop=&quot;sex&quot; label=&quot;性别&quot; width=&quot;80&quot;&gt;</span><br><span class="line">    &lt;template #default=&quot;scope&quot;&gt;</span><br><span class="line">        &lt;el-tag</span><br><span class="line">            :type=&quot;scope.row.sex === 1 ? &#x27;primary&#x27; : &#x27;success&#x27;&quot;</span><br><span class="line">            disable-transitions&gt;</span><br><span class="line">           &#123;&#123;scope.row.sex === 1 ? &#x27;男&#x27; : &#x27;女&#x27; &#125;&#125;</span><br><span class="line">        &lt;/el-tag&gt;</span><br><span class="line">    &lt;/template&gt;</span><br><span class="line">&lt;/el-table-column&gt;</span><br><span class="line"></span><br><span class="line">&gt; 本质是具名插槽，名字为 default</span><br><span class="line">&gt;</span><br><span class="line">&gt; scope：是父组件的对象，可以通过它来访问父组件的属性</span><br><span class="line">&gt;</span><br><span class="line">&gt; 父组件和子组件**有包含关系即可**，不是必须要在两个.vue文件中</span><br><span class="line"></span><br><span class="line">3. 改变列表第一行颜色`header-cell-style`，加上边框`border`</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+&lt;el-table :data=&quot;tableData&quot;
+          :header-cell-style=&quot;&#123; background:&#39;#f2f5fc&#39;, color:&#39;#555&#39;&#125;&quot;
+          border
+          &gt;
+</code></pre>
+</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">4. 加上按钮</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<pre><code>        &lt;el-table-column prop=&quot;operate&quot; label=&quot;操作&quot;&gt;
+            &lt;el-button type=&quot;success&quot;&gt;编辑&lt;/el-button&gt;
+            &lt;el-button type=&quot;danger&quot;&gt;删除&lt;/el-button&gt;
+        &lt;/el-table-column&gt;
+</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">5. 封装后端返回到前端的数据，修改后端接口代码</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>   @PostMapping(“&#x2F;listP”)<br>    public Result listP(@RequestBody User user) {<br>        LambdaQueryWrapper<User> lambdaQueryWrapper &#x3D; new LambdaQueryWrapper();<br>        if(StringUtils.isNotBlank(user.getName())){<br>            lambdaQueryWrapper.like(User::getName, user.getName());<br>        }<br>        return Result.suc(userService.list(lambdaQueryWrapper));<br>    }</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">6. 因为后端返回给前端的数据多封装了一层，所以前端拿数据时需要往下一层</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<pre><code>const loadPost = () =&gt; &#123;
+    axios.post(&#39;http://localhost:8080/user/listP&#39;,&#123;&#125;).then(res =&gt; res.data).then(res=&gt;&#123;
+        console.log(res);
+        if(res.code == 200)&#123;
+            tableData.value = res.data;
+        &#125;else&#123;
+            alert(&#39;获取数据失败&#39;)
+        &#125;
+    &#125;)
+&#125;
+</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">#### 6.7  分页查询</span><br><span class="line"></span><br><span class="line">1. 使用 element-plus 中的分页组件</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>template部分：<br>        &lt;el-pagination<br>            :current-page&#x3D;”pageNum”<br>            :page-size&#x3D;”pageSize”<br>            :page-sizes&#x3D;”[5, 10, 20, 30]”<br>            :size&#x3D;”size”<br>            layout&#x3D;”total, sizes, prev, pager, next, jumper”<br>            :total&#x3D;”total”<br>            @size-change&#x3D;”handleSizeChange”<br>            @current-change&#x3D;”handleCurrentChange”<br>        &#x2F;&gt;</p>
+<p>script部分：<br>    <script lang="ts" setup><br>    import { onMounted, ref } from &#39;vue&#39;<br>    import axios from &#39;axios&#39;<br>    import type { ComponentSize } from &#39;element-plus&#39;</p>
+<pre><code>const tableData = ref()
+const pageSize = ref(10)
+const pageNum = ref(1)
+const total = ref(0)
+const size = ref&lt;ComponentSize&gt;(&#39;default&#39;)
+const loadGet = () =&gt; &#123;
+    axios.get(&#39;http://localhost:8080/user/list&#39;).then(res =&gt; res.data).then(res=&gt;&#123;
+        console.log(res);
+    &#125;)
+&#125;
+const loadPost = () =&gt; &#123;
+    axios.post(&#39;http://localhost:8080/user/listPageC1&#39;,&#123;pageSize:pageSize.value,pageNum:pageNum.value&#125;).then(res =&gt; res.data).then(res=&gt;&#123;
+        console.log(res);
+        if(res.code == 200)&#123;
+            tableData.value = res.data;
+            total.value = res.total;
+        &#125;else&#123;
+            alert(&#39;获取数据失败&#39;)
+        &#125;
+    &#125;)
+&#125;
+onMounted(() =&gt; &#123;
+    //loadGet();
+    loadPost();
+&#125;)
+const handleSizeChange = (val: number) =&gt; &#123;  // val是组件 el-pagination 自带的属性
+    console.log(`$&#123;val&#125; items per page`)
+    pageNum.value = 1
+    pageSize.value = val;
+    loadPost()
+&#125;
+const handleCurrentChange = (val: number) =&gt; &#123;
+    console.log(`current page: $&#123;val&#125;`)
+    pageNum.value = val;
+    loadPost()
+&#125;
+</code></pre>
+<p></script></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">&gt; 总结: element-plus 已经将属性定义好了,我需要做的就是把后端传来的数据传给这个属性即可</span><br><span class="line"></span><br><span class="line">#### 6.8 查询处理</span><br><span class="line"></span><br><span class="line">1. 搜索栏：</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<div style="margin:5px;">
+            <el-input v-model="name" placeholder="请输入名字" suffix-icon="el-icon-search" style="width: 200px;"  @keyup.enter="loadPost" ></el-input>
+            <el-icon><Search /></el-icon>
+            <el-button type="primary" style="margin-left: 5px;" @click="loadPost">查询</el-button>
+            <el-button type="success">重置</el-button>
+        </div>
+        
+<p>const name &#x3D; ref();<br>   const loadPost &#x3D; () &#x3D;&gt; {<br>        axios.post(‘<a href="http://localhost:8080/user/listPageC1',%7BpageSize:pageSize.value,pageNum:pageNum.value,param:%7Bname:name.value%7D%7D).then">http://localhost:8080/user/listPageC1&#39;,{pageSize:pageSize.value,pageNum:pageNum.value,param:{name:name.value}}).then</a>(res &#x3D;&gt; res.data).then(res&#x3D;&gt;{<br>            console.log(res);<br>            if(res.code &#x3D;&#x3D; 200){<br>                tableData.value &#x3D; res.data;<br>                total.value &#x3D; res.total;<br>            }else{<br>                alert(‘获取数据失败’)<br>            }<br>        })<br>    }</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">&gt; @keyup.enter=&quot;loadPost&quot;：回车事件</span><br><span class="line"></span><br><span class="line">实现流程：绑定响应式数据 name ，再将 name 传到后端去查询</span><br><span class="line"></span><br><span class="line">2. 下拉查询：</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>&lt;el-select<br>                v-model&#x3D;”sex”  &#x2F;&#x2F; 定义一个响应式属性 sex<br>                filterable<br>                placeholder&#x3D;”请选择性别”<br>                style&#x3D;”width: 240px; margin-left: 5px;”<br>            &gt;<br>            <el-option
+            v-for="item in sexs"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+            /><br>            </el-select></p>
+<p>const sex &#x3D; ref();<br>    const sexs &#x3D; [<br>  {<br>    value: ‘1’,<br>    label: ‘男’,<br>  },<br>  {<br>    value: ‘0’,<br>    label: ‘女’,<br>  }];<br>  axios.post(‘<a href="http://localhost:8080/user/listPageC1">http://localhost:8080/user/listPageC1</a>‘,<br>        {pageSize:pageSize.value,pageNum:pageNum.value,param:{name:name.value,sex:sex.value}}) &#x2F;&#x2F; 新加 sex，传到后端</p>
+<p>后端新增：<br>String sex &#x3D; (String) param.get(“sex”);<br>if (StringUtils.isNotBlank(sex)){<br>            lambdaQueryWrapper.eq(User::getSex,sex);<br>        }</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">3. 重置</span><br><span class="line"></span><br><span class="line">实现流程：将 sex 和 name 属性清空</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>&lt;el-button type&#x3D;”success” @click&#x3D;”resetParam”&gt;重置</el-button><br>   const resetParam &#x3D;() &#x3D;&gt; {<br>        name.value &#x3D; ‘’;<br>        sex.value &#x3D; ‘’;<br>    }</p>
+<pre><code>
+
+
+
+
+
+
+
+
+
+</code></pre>
+]]></content>
+      <tags>
+        <tag>项目</tag>
+      </tags>
   </entry>
 </search>
