@@ -236,7 +236,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2025-05-26 18:37:34" itemprop="dateModified" datetime="2025-05-26T18:37:34+08:00">2025-05-26</time>
+      <time title="修改时间：2025-05-28 08:48:16" itemprop="dateModified" datetime="2025-05-28T08:48:16+08:00">2025-05-28</time>
     </span>
 
   
@@ -254,13 +254,14 @@
 <ul>
 <li>封装：将属性和方法绑定在一起，形成一个对象。并将对象内部隐藏起来，只暴露必要的接口供外部使用（数据保护）</li>
 <li>继承：一个类继承另一个类的属性和方法（代码复用，已于扩展）。</li>
-<li>多态：同一个方法可以接收不同类型的对象，产生不同的行为。<strong>允许将父类对象引用指向子类对象</strong></li>
+<li>多态：同一个方法用于不同的对象时，产生不同的行为。</li>
 </ul>
 <blockquote>
-<p>def animal_sound(animal):  </p>
-<p>print(animal.speak()) &#x2F;&#x2F; animal</p>
-<p>animal_sound(dog)  # 输出: Bark</p>
-<p>animal_sound(cat)  # 输出: Meow</p>
+<p> <strong>Animal</strong> dog &#x3D; new <strong>Dog</strong>();  &#x2F;&#x2F;  <strong>允许将父类对象引用指向子类对象</strong></p>
+<p> def animal_sound(animal):  </p>
+<p> print(animal.speak()) &#x2F;&#x2F; animal</p>
+<p> animal_sound(dog)  # 输出: Bark（ 前提是子类 dog 要重写父类的 sound 方法 ）</p>
+<p> animal_sound(cat)  # 输出: Meow</p>
 </blockquote>
 <ul>
 <li>抽象：隐藏复杂的实现细节，只保留重要的功能接口（程序员可以将注意力集中在高层次设计上）。</li>
@@ -275,6 +276,9 @@
 <p>动态性：反射使得我们在运行时动态地创建对象、调用方法和访问属性，与编译时不同，运行时反射允许程序在<strong>不知道具体类</strong>的情况下，根据需要处理对象</p>
 <p>使用场景：框架设计，动态代理（ 通过反射来创建对象 ）</p>
 <p>原理：加载完类之后，在堆中生成了一个 Class 类型的对象，这个对象包含了类的完整结构，然后通过 class 实例获取 class 信息和方法</p>
+<hr>
+<h3 id="泛型"><a href="#泛型" class="headerlink" title="泛型"></a>泛型</h3><p>定义：是 Java 语言中的一种特性，允许在类、接口、方法中使用类型参数。在实例化时指定具体的数据类型即可。</p>
+<p>使用场景：集合框架，自定义数据结构</p>
 <hr>
 <h2 id="Java集合"><a href="#Java集合" class="headerlink" title="Java集合"></a>Java集合</h2><p>由两大接口派生而来：<code>Collection</code> 和 <code>Map</code></p>
 <p>![屏幕截图 2025-05-12 164335](D:\xmind\Typora\image\屏幕截图 2025-05-12 164335.png)</p>
@@ -313,26 +317,37 @@
 <p>线程安全：Hashmap 非线程安全，ConcurrentHashMap，java7及之前，采用将整个哈希表分成多个段，每个段有自己的锁。java8 之后，采用 CAS（实现并发编程的原子性操作） 和 synchronized 来保证线程安全</p>
 <hr>
 <h3 id="HashMap-的底层原理"><a href="#HashMap-的底层原理" class="headerlink" title="HashMap 的底层原理"></a>HashMap 的底层原理</h3><ul>
-<li>将Key 的  <code>hashcode</code> 输入到扰动函数（ 优化哈希值的分布，减小碰撞 ）处理后得到 hash 值</li>
+<li>HashMap 是什么：使用一个数组来存储数据，每个数组元素被称为“桶”，每个桶可以存储一个链表或红黑树</li>
 </ul>
+<ol>
+<li>将Key 的  <code>hashcode（ 通过哈希函数计算得来 ）</code> 输入到扰动函数（ 优化哈希值的分布，减小碰撞 ）处理后得到 hash 值</li>
+</ol>
 <blockquote>
 <p>扰动函数 hash</p>
 <p> static final int hash(Object key) {<br>   int h;<br>   &#x2F;&#x2F; key.hashCode()：返回散列值也就是hashcode<br>   &#x2F;&#x2F; ^：按位异或<br>   &#x2F;&#x2F; &gt;&gt;&gt;:无符号右移，忽略符号位，空位都以0补齐<br>   return (key &#x3D;&#x3D; null) ? 0 : (h &#x3D; key.hashCode()) ^ (h &gt;&gt;&gt; 16);<br>}</p>
 </blockquote>
-<p>(n（数组长度） - 1) &amp; hash&#96; 判断元素存在的位置</p>
+<ol start="2">
+<li>(n（数组长度） - 1) &amp; hash&#96; 判断元素存在的位置</li>
+</ol>
 <p>如果存在元素，就判断两者的 hash 值和 key 是否相同，相同则直接覆盖，不同就通过拉链法解决冲突</p>
 <blockquote>
 <p>拉链法：若遇到哈希冲突，将冲突的值加到链表中</p>
 </blockquote>
-<p>当链表长度大于 8 时（ 当数组长度小于64，会先进性数组扩容 ），将链表转化为红黑树（ 减少搜索时间 ）</p>
+<p>当链表长度大于 8 时（ 当数组长度小于64，会优先进性数组扩容（ 因为可以减少哈希冲突的发生概率 ） ），将链表转化为红黑树（ 减少搜索时间 ）</p>
 <ul>
 <li>怎么扩容 ？</li>
 </ul>
-<p>当元素数量达到 capacity * loadFactor（ 负载因子 ），就会触发扩容</p>
-<p>创建一个扩大到当前容量的<strong>两倍</strong>的新数组，将旧数组映射到新数组中</p>
-<blockquote>
-<p>映射时，如果高位比特是 0，新数组中的索引和原数组相同，是 1 则加上旧数组的容量</p>
-</blockquote>
+<p>当元素数量（ 键值对 ）达到 capacity * loadFactor（ 负载因子，默认0.75 ），就会触发扩容</p>
+<ol>
+<li><p>创建一个扩大到当前容量的<strong>两倍</strong>的新数组</p>
+</li>
+<li><p>重新计算哈希值（ 用第 1 步的方法 ）</p>
+</li>
+<li><p>迁移元素，重新计算位置（ 用第 2 步的方法 ）</p>
+</li>
+<li><p>更新指针：将指向原数组得引用更新为指向新数组得引用</p>
+</li>
+</ol>
 <hr>
 <h3 id="hashcode-冲突怎么解决"><a href="#hashcode-冲突怎么解决" class="headerlink" title="hashcode 冲突怎么解决"></a>hashcode 冲突怎么解决</h3><p>链地址法：在值中，使用链表才存储哈希值相同的对象</p>
 <p>开放地址法：寻找哈希表下一个空的桶来存储冲突对象</p>
@@ -476,7 +491,7 @@
 <hr>
 <h3 id="索引"><a href="#索引" class="headerlink" title="索引"></a>索引</h3><p>定义：用于加速数据检索的一种数据结构，可以显著提高查询性能（ MySQL能快速定位到数据，而不需要扫描整个表 ）</p>
 <ul>
-<li>B+ tree</li>
+<li>B+ tree：叶子节点才存放数据，非叶子节点只放索引（ 索引里有多个键，例如：类似于将搜索树的左右两个节点变成一个节点，而这个节点里就是索引，索引里有两个键 ）。子节点有两个指针，分别执</li>
 </ul>
 <h4 id="索引失效的场景"><a href="#索引失效的场景" class="headerlink" title="索引失效的场景"></a>索引失效的场景</h4><ol>
 <li><p>WHERE 语句中，OR 前的条件列是索引列，而 OR 后的条件列不是索引列</p>
@@ -527,12 +542,12 @@
 <hr>
 <h3 id="jvm内存模型介绍一下"><a href="#jvm内存模型介绍一下" class="headerlink" title="jvm内存模型介绍一下"></a><strong>jvm内存模型介绍一下</strong></h3><p>作用：定义了 Java 程序如何在内存中分配和管理数据</p>
 <ul>
-<li>方法区：存储类信息、常量、静态变量和 JIT 编译后的代码。Java 8 之后，成为<strong>元空间</strong>，不再使用堆内存而是本地内存（ JVM运行时从操作系统分配的内存 ）</li>
+<li>方法区：存储类信息、常量、静态变量和 JIT 编译后的代码。Java 8 之后，成为<strong>元空间</strong>，不再使用堆内存而是本地内存（ JVM运行时从操作系统分配的内存 ），是线程共享的</li>
 <li>堆区：存储对象实例，是 JVM 中最大的内存区域。也是所有<strong>线程共享</strong>的内存区域，垃圾回收的主要区域，</li>
 </ul>
 <p>有新生代（ 存放新创建的对象 ）、老年代（ 存放长期存活的对象）和元空间（ 存储类的元数据 ）</p>
 <ul>
-<li>栈区：每个线程都有自己的栈，存储局部变量、方法调用。局部变量在方法调用结束后立即被销毁</li>
+<li>栈区：线程私有，存储局部变量、方法调用。局部变量在方法调用结束后立即被销毁</li>
 <li>程序计数器：记录当前线程执行字节码的地址，该区域<strong>线程私有</strong></li>
 <li>本地方法栈：执行本地方法（通过 JNI调用的、用其他编程语言编写的方法 ）的调用</li>
 </ul>
@@ -746,8 +761,8 @@
 <p>SETNX：键不存在时才插入</p>
 </blockquote>
 <ul>
-<li>自动解锁机制：可以设置锁的过期时间，SETNX需要额外的逻辑（ EX&#x2F;PX，Lua 脚本 ）</li>
-<li>SETNX 不可重试，失败了就返回 false，Redisson 的 tryLock方法有<strong>超时释放机制和等待机制</strong></li>
+<li>自动续约功能：Redisson 在锁持有期间<strong>自动续约</strong>，确保锁不会过期</li>
+<li>SETNX 不可重试，失败了就返回 false，Redisson 的 <strong>tryLock</strong>方法有<strong>超时释放机制和等待机制</strong></li>
 <li>简洁 API：提供了简洁易用的 API，无需关心底层的 Redis 命令</li>
 </ul>
 <hr>
@@ -795,7 +810,15 @@
 <h3 id="Bean-的生命周期"><a href="#Bean-的生命周期" class="headerlink" title="Bean 的生命周期"></a>Bean 的生命周期</h3><ul>
 <li>实例化（ @Component ）</li>
 <li>属性注入（ @Autowired ）</li>
-<li>初始化（ @PostConstruct ）</li>
+<li>BeanPostProcessor 的前置处理：Bean 初始化前，Spring 会调用实现了 <code>BeanPostProcessor</code> 接口的 <code>postProcessBeforeInitialization()</code> 方法，允许对 Bean 进行自定义修改</li>
+<li>初始化</li>
+</ul>
+<ol>
+<li>使用 @PostConstruct 注解：在方法上添加 @ PostConstruct 注解，Spring 会在依赖注入完成后调用该方法</li>
+<li>实现 InitializingBean 接口，并重写 afterPropertiesSet 方法</li>
+<li>配置 init-method</li>
+</ol>
+<ul>
 <li>销毁（ @PreDestroy ）</li>
 </ul>
 <hr>
@@ -806,7 +829,7 @@
 <ul>
 <li>构造函数注入：通过构造函数将依赖对象传递给目标对象</li>
 <li>方法注入：调用方法时传递依赖项</li>
-<li>字段注入：通过直接在字段上使用 @Autowired 注解进行注入（ 自动装配：Spring 框架提供的一个功能，旨在简化依赖注入的过程，允许Spring 自动解决和注入对象之间的依赖关系，无需手动配置 ）</li>
+<li>字段注入：通过直接在字段上使用 @Autowired 注解进行注入（ 自动装配：Spring 框架提供的一个功能，框架能够自动识别并注入依赖对象，无需手动配置 ）</li>
 </ul>
 <hr>
 <h3 id="AOP"><a href="#AOP" class="headerlink" title="AOP"></a>AOP</h3><p>面向切面编程（ Aspect-Oriented Programming ）：是一种编程范式，用于将跨越多个模块的关注点（ 如日志、事务管理、安全等 ）从业务逻辑中分离出来，以提高代码的模块化和可维护性</p>
@@ -845,7 +868,7 @@
 <li>第一次挥手：客户端发送一个 <strong>FIN</strong>（ 表示它已经没有数据要发送 ）报文给服务器，，但仍可以接收数据</li>
 <li>第二次挥手：服务器发送一个 <strong>ACK</strong> 报文给客户端（ 表示收到了客户端的关闭请求 ），此时服务器可能还有数据需要发送，所以不会立刻关闭</li>
 <li>第三次挥手：服务器数据全部发送完成，发送 FIN 报文给客户端，表示它也没有数据需要发送了，准备关闭连接</li>
-<li>第四次挥手：客户端发送 ACK 报文给服务器。服务器收到 ACK 后就 CLOSE，客户端经过 2MSL（ 报文最大生存时间 ） 后 CLOSE</li>
+<li>第四次挥手：客户端发送 ACK 报文给服务器。服务器收到 ACK 后就 CLOSE，客户端经过 2MSL（ MSL：报文最大生存时间，确保即使有延迟的报文段在网络中，也会在这段事件被丢弃，<strong>从而不会干扰到新连接</strong> ） 后 CLOSE</li>
 </ul>
 <hr>
 <h3 id="打开页面的全过程"><a href="#打开页面的全过程" class="headerlink" title="打开页面的全过程"></a>打开页面的全过程</h3><hr>
@@ -926,9 +949,15 @@
 </ul>
 <hr>
 <h2 id="进程、线程、协程的区别"><a href="#进程、线程、协程的区别" class="headerlink" title="进程、线程、协程的区别"></a>进程、线程、协程的区别</h2><ul>
-<li>进程：操作系统中资源分配的基本单位，每个进程有独立的内存，由操作系统调度。CPU密集型任务</li>
-<li>线程：进程中的一个执行单元，共享同一进程的资源和内存，由操作系统调度。并发执行的任务</li>
-<li>协程：是一种用户态的<strong>轻量级</strong>（ 无需进行内核级的上下文切换 ）线程，调度由<strong>程序自身控制</strong>，不需要内核参与。I&#x2F;O密集型任务（ 单个线程可以运行多个协程 ）</li>
+<li>进程：是正在执行的程序的一个实例，操作系统中资源分配的基本单位，每个进程有独立的内存，由操作系统调度。使用场景：CPU密集型任务</li>
+<li>线程：进程中的一个执行单元，共享同一进程的资源和内存，由操作系统调度，并发执行的任务。</li>
+</ul>
+<ol>
+<li>轻量级：线程的上下文切换涉及的状态信息较少（ 主要是 CPU 寄存器和栈指针等 ）</li>
+<li>创建开销小：只需要在进程的内存空间中分配少量的栈空间</li>
+</ol>
+<ul>
+<li>协程：是一种用户态的<strong>轻量级</strong>（ 无需进行内核级的上下文切换 ）线程，调度由<strong>程序自身控制</strong>，不需要内核参与。使用场景：I&#x2F;O密集型任务（ 单个线程可以运行多个协程 ）</li>
 </ul>
 <hr>
 <h3 id="IO多路复用是什么"><a href="#IO多路复用是什么" class="headerlink" title="IO多路复用是什么"></a>IO多路复用是什么</h3><p>允许程序在单一线程中同时监控多个IO流</p>
@@ -939,8 +968,16 @@
 <h2 id="Linux"><a href="#Linux" class="headerlink" title="Linux"></a>Linux</h2><h3 id="如何查看进程号状态"><a href="#如何查看进程号状态" class="headerlink" title="如何查看进程号状态"></a>如何查看进程号状态</h3><p><code>ps aux</code> ：显示所有用户进程</p>
 <p><code>ps -ef | grep</code>：查找特定进程</p>
 <p><code>top</code></p>
+<hr>
 <h3 id="查看线程"><a href="#查看线程" class="headerlink" title="查看线程"></a>查看线程</h3><p><code>top -H</code></p>
 <p><code>ps -T -p 1234</code></p>
+<hr>
+<h3 id="常见命令"><a href="#常见命令" class="headerlink" title="常见命令"></a>常见命令</h3><p><code>ls</code> ：列出目录内容</p>
+<p><code>cd</code>：更改当前目录</p>
+<p><code>mv</code>：移动文件</p>
+<p><code>rm</code>：删除文件</p>
+<p><code>mkdir</code>：创建信目录</p>
+<p><code>touch</code>：创建空文件</p>
 <hr>
 
       
