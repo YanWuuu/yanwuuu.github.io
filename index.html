@@ -236,7 +236,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2025-05-28 08:48:16" itemprop="dateModified" datetime="2025-05-28T08:48:16+08:00">2025-05-28</time>
+      <time title="修改时间：2025-05-28 09:20:51" itemprop="dateModified" datetime="2025-05-28T09:20:51+08:00">2025-05-28</time>
     </span>
 
   
@@ -311,10 +311,10 @@
 <p>常用于生产者-消费者模型中，生产者线程向队列中添加元素，消费者线程从队列中取出数据</p>
 <hr>
 <h3 id="HashMap-和-Hashtable-的区别"><a href="#HashMap-和-Hashtable-的区别" class="headerlink" title="HashMap 和 Hashtable 的区别"></a>HashMap 和 Hashtable 的区别</h3><p>HashMap：线程不安全。可以存储 null 的 key 和 value。总是以 2 的幂作为容量大小。</p>
-<p>Hashtable：线程安全，不能存储 null。 容量变为 2n + 1。底层基于 HashMap</p>
+<p>Hashtable：线程安全（ Synchronized ），不能存储 null。 容量变为 2n + 1。底层基于 HashMap</p>
 <hr>
 <h3 id="HashMap与ConcurrentHashMap的区别是什么？"><a href="#HashMap与ConcurrentHashMap的区别是什么？" class="headerlink" title="HashMap与ConcurrentHashMap的区别是什么？"></a><strong>HashMap与ConcurrentHashMap的区别是什么？</strong></h3><p>内存结构：都是数组+链表+红黑树</p>
-<p>线程安全：Hashmap 非线程安全，ConcurrentHashMap，java7及之前，采用将整个哈希表分成多个段，每个段有自己的锁。java8 之后，采用 CAS（实现并发编程的原子性操作） 和 synchronized 来保证线程安全</p>
+<p>线程安全：Hashmap 非线程安全，ConcurrentHashMap，java7及之前，采用将整个哈希表分成多个段，每个段有自己的锁。java8 之后，采用 CAS（ 实现并发编程的原子性操作 ） 和 synchronized 来保证线程安全</p>
 <hr>
 <h3 id="HashMap-的底层原理"><a href="#HashMap-的底层原理" class="headerlink" title="HashMap 的底层原理"></a>HashMap 的底层原理</h3><ul>
 <li>HashMap 是什么：使用一个数组来存储数据，每个数组元素被称为“桶”，每个桶可以存储一个链表或红黑树</li>
@@ -363,6 +363,15 @@
 <li>可见性：一个线程对共享变量的修改，能够即时被其他线程看到（ volatile：用于修饰变量，确保在多线程环境下对该变量的写操作可以被其他线程及时看到 ）</li>
 <li>有序性：保证程序中语句执行的顺序</li>
 </ul>
+<hr>
+<h3 id="死锁"><a href="#死锁" class="headerlink" title="死锁"></a>死锁</h3><p>定义：两个或多个进程因为争夺资源而相互等待，导致所有进程都无法执行（ A 请求 B 占用的资源，B 请求 A占用的资源 ）</p>
+<p>发生的四个条件：</p>
+<ol>
+<li>互斥：至少有一个资源处于非共享模式，即每一时刻只能被一个进程占用</li>
+<li>持有并等待：进程至少持有一个资源，并且在等待获取其他资源</li>
+<li>不抢占：资源不能被抢占（ 只有持有它的进程可以释放 ）</li>
+<li>循环等待：存在一种循环链，每个进程在等待下一个进程所持有的资源</li>
+</ol>
 <hr>
 <h3 id="Synchronized"><a href="#Synchronized" class="headerlink" title="Synchronized"></a>Synchronized</h3><p>作用：保证被它修饰的方法或代码块在同一时刻只能由一个线程执行</p>
 <p>非公平（ 多个线程竞争一把锁时，锁的获取顺序并不保证遵循请求的顺序 ）、可重入（ 同一线程可以多次获取同同一把锁 ）</p>
@@ -441,20 +450,20 @@
 <h3 id="ABA是什么问题，一般可以怎么解决？"><a href="#ABA是什么问题，一般可以怎么解决？" class="headerlink" title="ABA是什么问题，一般可以怎么解决？"></a>ABA是什么问题，一般可以怎么解决？</h3><p>线程对共享状态的错误理解，情景：线程 A 读取某个变量的值为 A，线程 B 将该值修改为 B 而后又将其恢复为 A ，当线程 A 执行 CAS 操作时，会发现值还是 A，误认为没有其他线程对该变量修改，最终成功修改该值</p>
 <p>通过版本号解决</p>
 <hr>
-<h2 id="MySQL"><a href="#MySQL" class="headerlink" title="MySQL"></a>MySQL</h2><h3 id="事务"><a href="#事务" class="headerlink" title="事务"></a>事务</h3><p>定义：一系列命令的集合</p>
+<h2 id="MySQL"><a href="#MySQL" class="headerlink" title="MySQL"></a>MySQL</h2><h3 id="事务"><a href="#事务" class="headerlink" title="事务"></a>事务</h3><p>定义：一组要执行的数据库操作</p>
 <p>作用：保证数据的一致性</p>
 <p>ACID特性：</p>
 <ul>
-<li>原子性（ Atomicity ）：事务是最小的执行单位。要么全部完成，要么全部不起作用</li>
-<li>一致性（Consistency）：执行事务前后，数据保持一致</li>
+<li>原子性（ Atomicity ）：事务是最小的执行单位。要么全部完成，要么全部不起作用（ 回滚 ）</li>
+<li>一致性（Consistency）：执行事务前后，数据保持一致（ 数据库的约束检查 ）</li>
 </ul>
 <blockquote>
 <p>转账业务中，无论事务是否成功， 转账这和收款人的总额应该是不变的</p>
 </blockquote>
 <ul>
-<li><p>隔离性（ Isolation ）：各并发事务之间的数据库是独立的</p>
+<li><p>隔离性（ Isolation ）：各并发事务之间的数据库是独立的（ 行锁、表锁 ）</p>
 </li>
-<li><p>持久性（ Durability ）：一个事务被提交后，数据库中的改变是持久的</p>
+<li><p>持久性（ Durability ）：一个事务被提交后，数据库中的改变是持久的（ 日志记录 ）</p>
 </li>
 <li><p>保证了事务的原子性，隔离性和持久性之后，一致性才能保证，AID是手段，C是目的</p>
 </li>
@@ -832,9 +841,9 @@
 <li>字段注入：通过直接在字段上使用 @Autowired 注解进行注入（ 自动装配：Spring 框架提供的一个功能，框架能够自动识别并注入依赖对象，无需手动配置 ）</li>
 </ul>
 <hr>
-<h3 id="AOP"><a href="#AOP" class="headerlink" title="AOP"></a>AOP</h3><p>面向切面编程（ Aspect-Oriented Programming ）：是一种编程范式，用于将跨越多个模块的关注点（ 如日志、事务管理、安全等 ）从业务逻辑中分离出来，以提高代码的模块化和可维护性</p>
+<h3 id="AOP"><a href="#AOP" class="headerlink" title="AOP"></a>AOP</h3><p>面向切面编程（ Aspect-Oriented Programming ）：是一种编程范式，用于将跨越多个模块的关注点（ 如日志、事务管理、安全性（ 方法执行前进行权限检查 ）等 ）从业务逻辑中分离出来，以提高代码的模块化和可维护性</p>
 <ul>
-<li>横切关注点：多个类或对象中的公共行为（ 如日志记录、事务管理等 ）</li>
+<li>横切关注点：多个类或对象中的<strong>公共行为</strong>（ 如日志记录、事务管理等 ）</li>
 <li>切面：对横切关注点进行封装的类，用来实现具体的功能</li>
 <li>连接点：程序执行中的一个点（ 如方法调用、对象创建 ）</li>
 <li>通知：切面在某个连接点要执行的操作（ 前置、后置、环绕 ）</li>
