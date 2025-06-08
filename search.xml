@@ -1442,7 +1442,7 @@ const handleCurrentChange = (val: number) =&gt; &#123;
 </li>
 </ol>
 <blockquote>
-<p>行级锁定：数据库管理系统中对数据进行的锁定机制，与表级锁不同，行级锁只锁定被修改的特定行，允许多个事务同时访问不同的行，提高并发性能</p>
+<p>行级锁定：允许多个事务同时对同一表进行操作，但每个事务只能对<strong>不同的行</strong>进行操作</p>
 </blockquote>
 <ol start="3">
 <li>崩溃恢复：通过 redolog 日志实现了崩溃恢复，保证数据的持久性</li>
@@ -1710,24 +1710,45 @@ const handleCurrentChange = (val: number) =&gt; &#123;
 <p>其他方法：雪花算法</p>
 <hr>
 <h3 id="乐观锁解决超卖问题"><a href="#乐观锁解决超卖问题" class="headerlink" title="乐观锁解决超卖问题"></a>乐观锁解决超卖问题</h3><ul>
-<li>悲观锁：认为线程安全一定会发生，因此操作数据库之前需要先获取锁（ synchronized、lock ）</li>
-<li>乐观锁：认为线程安全不一定会发生，不加锁，在更新数据库的时候判断判断有没有其它线程对数据进行修改实现方法：（ 版本号、 CAS ），不安全则抛出异常或中断</li>
+<li><p>超卖问题一：库存减到了负数，但是每个线程在减库存之前<strong>会先判断库存是否充足</strong>，为什么还会发生超卖问题呢？</p>
+<p>产生原因：假设两个线程，A 和 B，A 扣减库存是需要时间的，如果这之间又进入了一个线程 B，B 去判断库存发现库存是大于零的（ 因为 A 还没有扣减成功 ），而后 A 扣减库存成功，B不知道，又扣减库存</p>
+</li>
+<li><p>解决方法：</p>
+</li>
 </ul>
 <ol>
-<li>版本号法：新增一个版本号字段，线程 1 在进行库存扣减的同时将版本号 +1，线程 2 在进行扣减操作时，要先判断此时的版本号和查询库存时的版本号是否一致</li>
-<li>CAS（ Compare-And-Swap ） 法：使用库存代替版本</li>
+<li><p>悲观锁：认为线程安全一定会发生，因此操作数据库之前需要先获取锁（ synchronized、lock ）</p>
+</li>
+<li><p>乐观锁：认为线程安全不一定会发生，不加锁，在更新数据库的时候判断判断有没有其它线程对数据进行修改实现方法：（ 版本号、 CAS ），不安全则抛出异常或中断</p>
+</li>
 </ol>
+<ul>
+<li><p>版本号法：新增一个版本号字段，线程 1 在进行库存扣减的同时将版本号 +1，线程 2 在进行扣减操作时，要先判断此时的版本号和查询库存时的版本号是否一致</p>
+</li>
+<li><p>CAS（ Compare-And-Swap ） 法：使用库存代替版本</p>
+</li>
+</ul>
 <blockquote>
 <p>读取内存地址 V 的当前值，将当前值与预期值（ 查询时的库存数 ） A 比较，如果当前值等于预期值则将 V 更新为新值 B，否则不进行更新，返回当前值</p>
 </blockquote>
 <hr>
-<h3 id="为什么使用分布式锁"><a href="#为什么使用分布式锁" class="headerlink" title="为什么使用分布式锁"></a>为什么使用分布式锁</h3><p><strong>乐观锁</strong>用于低并发、简单的更新操作中，在涉及多个步骤（ 检查库存、扣减库存 ）时，使用分布式锁来确保这些操作的<strong>互斥性和原子性</strong></p>
-<p>分布式锁定义：用于<strong>分布式环境下</strong>并发控制的一种机制，用于控制某个资源在同一时刻只能被一个应用使用</p>
+<h3 id="一人一单的超卖问题"><a href="#一人一单的超卖问题" class="headerlink" title="一人一单的超卖问题"></a>一人一单的超卖问题</h3><img src="D:\xmind\Typora\image\屏幕截图 2025-06-08 151659.png" alt="屏幕截图 2025-06-08 151659" style="zoom:80%;" />
+
+<ul>
+<li>超卖问题二：一人购买了多次，增加了校验一人一单的操作（ 判断订单是否存在 ）为什么还会出现这个问题？</li>
+</ul>
+<p>​	产生原因：理由和上面的类似，创建订单是需要时间的</p>
+<ul>
+<li>解决方法：</li>
+</ul>
+<p>​	使用了悲观锁，将校验一人一单（  判断订单是否存在 ）和减库存、创建订单的操作锁起来</p>
+<hr>
+<h3 id="为什么使用分布式锁"><a href="#为什么使用分布式锁" class="headerlink" title="为什么使用分布式锁"></a>为什么使用分布式锁</h3><p>分布式锁定义：用于<strong>分布式环境下</strong>并发控制的一种机制，用于控制某个资源在同一时刻只能被一个应用使用</p>
 <p>JVM 之间是相互独立的，每个 JVM 中的 synchronized 锁都是局部的、独立的锁。在集群环境中，两个运行在不同 JVM 上的程序无法共享同一个 synchronized 锁，锁失效。</p>
 <p>所以需要分布式锁（ 在集群模式下多进程可见并且互斥的锁 ）</p>
 <hr>
 <h3 id="分布式锁优化"><a href="#分布式锁优化" class="headerlink" title="分布式锁优化"></a>分布式锁优化</h3><p>产生的问题：业务阻塞导致<strong>锁的超时释放</strong>，而后业务又完成了，释放锁的时候就出现了问题</p>
-<p>分布式锁优化 1：产生原因：释放了别人的锁，解决方法：判断这个锁是不是自己的锁</p>
+<p>分布式锁优化 1：产生原因：释放了别人的锁，解决方法：释放锁时判断这个锁是不是自己的锁</p>
 <p>分布式锁优化 2：产生原因：判断是否是锁之后阻塞了，又释放了别人的锁（ 误判 ），解决方法：Lua 脚本（ 保障判断锁和释放锁这段代码的原子性 ）</p>
 <p>为什么需要 Lua：解锁有两个操作，先判断该锁是否是加锁客户端，是的话，再将锁删除</p>
 <p>Lua 保证原子性的原理：单线程执行，Redis 的事务支持（ Lua 脚本执行期间，Redis 不允许执行其他命令 ）</p>
@@ -1751,7 +1772,7 @@ const handleCurrentChange = (val: number) =&gt; &#123;
 
 <hr>
 <h3 id="在实现异步秒杀下单时，您是如何保证消息的可靠性和一致性的？"><a href="#在实现异步秒杀下单时，您是如何保证消息的可靠性和一致性的？" class="headerlink" title="在实现异步秒杀下单时，您是如何保证消息的可靠性和一致性的？"></a>在实现异步秒杀下单时，您是如何保证消息的可靠性和一致性的？</h3><hr>
-<h3 id="如何用-redis-的-Sortedset做排行榜？"><a href="#如何用-redis-的-Sortedset做排行榜？" class="headerlink" title="如何用 redis 的 Sortedset做排行榜？"></a>如何用 redis 的 Sortedset做排行榜？</h3><p>它能够存储唯一的元素，并且每个元素都有一个分数，可以根据这个分数进行排序</p>
+<h3 id="如何用-redis-的-Sortedset-做排行榜？"><a href="#如何用-redis-的-Sortedset-做排行榜？" class="headerlink" title="如何用 redis 的 Sortedset 做排行榜？"></a>如何用 redis 的 Sortedset 做排行榜？</h3><p>它能够存储唯一的元素，并且每个元素都有一个分数，可以根据这个分数进行排序</p>
 <ul>
 <li><strong>ZADD</strong> leaderboard 用户ID 得分：将用户得分添加到 SortedSet 中</li>
 <li><strong>ZRANGE</strong> leaderboard 0 N-1 WITHSCORES：升序返回前 N 名，<strong>ZREVRANK</strong> 降序</li>
@@ -1840,7 +1861,7 @@ const handleCurrentChange = (val: number) =&gt; &#123;
 <p>二级缓存：存放尚未完成初始化（ 这些对象的<strong>依赖注入还没完成</strong> ），但已经创建了部分对象的缓存。Spring 之所以提前将这些对象<strong>暴露</strong>出来，是为了处理循环依赖问题</p>
 <p>三级缓存：存放 bean 的工厂方法（ 实例化一个 Bean 的过程中，Spring 还没有完成它的初始化，但这个工厂方法<strong>可以返回一个还没有完成初始化的对象</strong>，Spring 可以通过这个工厂方法再后续完成其初始化 ）</p>
 <hr>
-<h3 id="自动配置"><a href="#自动配置" class="headerlink" title="自动配置"></a>自动配置</h3><ol>
+<h3 id="自动装配"><a href="#自动装配" class="headerlink" title="自动装配"></a>自动装配</h3><ol>
 <li>会根据依赖自动配置应用程序需要的 <strong>bean</strong></li>
 <li>可以与 yml 文件（ 配置应用程序的属性 ）集成，可通过 yml 文件自定义自动配置的行为</li>
 </ol>
@@ -1848,7 +1869,7 @@ const handleCurrentChange = (val: number) =&gt; &#123;
 <p>自定义 yml 需要 <strong>@ConfigurationProperties( prefix &#x3D; ‘myapp’ )</strong>，@Value( “${ myapp.name }” )：用于从配置文件中注入单个值</p>
 </blockquote>
 <hr>
-<h3 id="SpringBootApplication"><a href="#SpringBootApplication" class="headerlink" title="SpringBootApplication"></a>SpringBootApplication</h3><ul>
+<h3 id="SpringBootApplication（-自动装配原理-）"><a href="#SpringBootApplication（-自动装配原理-）" class="headerlink" title="SpringBootApplication（ 自动装配原理 ）"></a>SpringBootApplication（ 自动装配原理 ）</h3><ul>
 <li>@Configuration：定义一个 Java 类作为 Spring 的配置类，作用：告诉 Spring 容器，这个类包含了一个或多个 @Bean 方法，这些方法会被 Spring 容器管理</li>
 <li>@EnableAutoConfiguration：启动自动配置功能</li>
 <li>@ComponentScan：扫描当前包及其子包中的组件（ @Component ）</li>
@@ -1880,7 +1901,49 @@ const handleCurrentChange = (val: number) =&gt; &#123;
 <li>第四次挥手：客户端发送 ACK 报文给服务器。服务器收到 ACK 后就 CLOSE，客户端经过 2MSL（ MSL：报文最大生存时间，确保即使有延迟的报文段在网络中，也会在这段事件被丢弃，<strong>从而不会干扰到新连接</strong> ） 后 CLOSE</li>
 </ul>
 <hr>
-<h3 id="打开页面的全过程"><a href="#打开页面的全过程" class="headerlink" title="打开页面的全过程"></a>打开页面的全过程</h3><hr>
+<h3 id="一条-URL-到页面渲染的过程"><a href="#一条-URL-到页面渲染的过程" class="headerlink" title="一条 URL 到页面渲染的过程"></a>一条 URL 到页面渲染的过程</h3><ol>
+<li><p>应用层：</p>
+<ul>
+<li><p>DNS 解析，浏览器先检查本地 DNS 缓存，没有的话，向 DNS 服务器发起查询</p>
+</li>
+<li><p>浏览器根据 URL 生成 HTTP 请求报文</p>
+</li>
+</ul>
+</li>
+<li><p>传输层：</p>
+<ul>
+<li>通过 TCP 三次握手与服务器建立连接</li>
+<li>建立连接后，将 HTTP 请求通过 TCP 连接发送到目标服务器</li>
+</ul>
+</li>
+<li><p>网络层：</p>
+<ul>
+<li>将 TCP 段封装成 IP 数据包（ 添加源 IP 地址和目的 IP 地址 ）</li>
+<li>路由转发</li>
+</ul>
+</li>
+<li><p>数据链路层：</p>
+<ul>
+<li>封装成帧：添加源和目的 MAC 地址</li>
+</ul>
+</li>
+<li><p>物理层：</p>
+<ul>
+<li>通过物理媒介（ 电缆、光纤 ）传输，涉及电信号到光信号的转换</li>
+</ul>
+</li>
+<li><p>服务端处理：</p>
+<ul>
+<li>根据请求的 URL 找到相应的资源，生成 HTTP 响应（ 状态码，响应头，请求体）</li>
+<li>通过 TCP 连接发送回浏览器</li>
+</ul>
+</li>
+<li><p>浏览器解析响应：提取出 HTML 内容</p>
+</li>
+<li><p>页面渲染</p>
+</li>
+</ol>
+<hr>
 <h3 id="HTTP-和-HTTPS的区别是什么？"><a href="#HTTP-和-HTTPS的区别是什么？" class="headerlink" title="HTTP 和 HTTPS的区别是什么？"></a>HTTP 和 HTTPS的区别是什么？</h3><ul>
 <li>HTTPS 在传输层和网络层之间加入了 SSL&#x2F;TLS 协议，使得报文能够加密传输</li>
 <li>HTTP 80、HTTPS 443</li>
