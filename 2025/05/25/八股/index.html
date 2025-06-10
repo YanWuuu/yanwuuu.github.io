@@ -32,7 +32,7 @@
 <meta property="og:image" content="d:\xmind\Typora\image\%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE 2025-06-08 151659.png">
 <meta property="og:image" content="d:\xmind\Typora\image\%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE 2025-05-19 202339.png">
 <meta property="article:published_time" content="2025-05-25T01:14:09.000Z">
-<meta property="article:modified_time" content="2025-06-08T08:32:06.409Z">
+<meta property="article:modified_time" content="2025-06-10T07:04:51.232Z">
 <meta property="article:author" content="Yan">
 <meta property="article:tag" content="总结">
 <meta name="twitter:card" content="summary">
@@ -245,7 +245,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2025-06-08 16:32:06" itemprop="dateModified" datetime="2025-06-08T16:32:06+08:00">2025-06-08</time>
+      <time title="修改时间：2025-06-10 15:04:51" itemprop="dateModified" datetime="2025-06-10T15:04:51+08:00">2025-06-10</time>
     </span>
 
   
@@ -915,10 +915,17 @@
 <li>Controller（ 控制器 ）：用于处理用户请求，调用相应的服务处进行业务处理，并返回视图</li>
 </ul>
 <hr>
-<h3 id="SpringBoot-三级缓存解决循环依赖"><a href="#SpringBoot-三级缓存解决循环依赖" class="headerlink" title="SpringBoot 三级缓存解决循环依赖"></a>SpringBoot 三级缓存解决循环依赖</h3><p>和 Bean 的<strong>生命周期</strong>相关</p>
-<p>一级缓存：存放完全<strong>初始化好</strong>的对象的缓存</p>
-<p>二级缓存：存放尚未完成初始化（ 这些对象的<strong>依赖注入还没完成</strong> ），但已经创建了部分对象的缓存。Spring 之所以提前将这些对象<strong>暴露</strong>出来，是为了处理循环依赖问题</p>
-<p>三级缓存：存放 bean 的工厂方法（ 实例化一个 Bean 的过程中，Spring 还没有完成它的初始化，但这个工厂方法<strong>可以返回一个还没有完成初始化的对象</strong>，Spring 可以通过这个工厂方法再后续完成其初始化 ）</p>
+<h3 id="SpringBoot-三级缓存解决循环依赖"><a href="#SpringBoot-三级缓存解决循环依赖" class="headerlink" title="SpringBoot 三级缓存解决循环依赖"></a>SpringBoot 三级缓存解决循环依赖</h3><p>和 Bean 的<strong>生命周期</strong>相关（ 实例化，依赖注入，初始化 ）</p>
+<p>一级缓存：存放最终形态的 Bean（ 完成了实例化、依赖注入、初始化 ）</p>
+<p>二级缓存：存放过渡 Bean（ 半成品，这些对象的<strong>依赖注入还没完成</strong> ），也就是三级缓存中 <code>ObjectFactory</code>产生的对象，作用：<strong>暴露</strong>出来供某个遇到循环依赖的对象使用。与三级缓存配合使用，可以<strong>防止</strong> AOP 情况下，每次调用会产生<strong>新的代理对象</strong></p>
+<p>三级缓存：存放<code>ObjectFactory</code>（ Bean 的工厂方法 ），它的方法<code>getObject()</code>可以生成原始 Bean 对象或代理对象（ 虽然没有初始化完成，但是可以拿到该对象在堆中的内存地址了 ）</p>
+<p>创建 Bean 的流程：</p>
+<ol>
+<li>先去一级缓存中获取，存在就返回；</li>
+<li>如果不存在或者对象正在创建，就去二级缓存中获取；</li>
+<li>如果还没有，就去三级缓存中获取，通过<code>ObjectFactory.getObject()</code>可以获取该对象，获取成功后，从三级缓存移除，并将该对象加入到二级缓存中</li>
+</ol>
+<p>缺点：增加了内存开销，非单例 Bean 和 @Async 注解的 Bean 无法支持循环依赖</p>
 <hr>
 <h3 id="自动装配"><a href="#自动装配" class="headerlink" title="自动装配"></a>自动装配</h3><ol>
 <li>会根据依赖自动配置应用程序需要的 <strong>bean</strong></li>
