@@ -169,7 +169,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">5</span>
+          <span class="site-state-item-count">6</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -191,6 +191,202 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/06/11/MySQL/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Yan">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yan的博客">
+      <meta itemprop="description" content="心有所向，无问西东">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Yan的博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2025/06/11/MySQL/" class="post-title-link" itemprop="url">MySQL</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2025-06-11 20:43:13 / 修改时间：20:43:34" itemprop="dateCreated datePublished" datetime="2025-06-11T20:43:13+08:00">2025-06-11</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="MySQL"><a href="#MySQL" class="headerlink" title="MySQL"></a>MySQL</h1><h2 id="1-基本概念"><a href="#1-基本概念" class="headerlink" title="1. 基本概念"></a>1. 基本概念</h2><ul>
+<li>DMBS（Database Management System）：对数据库进行管理和操作</li>
+</ul>
+<blockquote>
+<p><strong>MySQL是一种 CS 架构的 DMBS</strong>。安装的MySQL包括客户端和服务端</p>
+<blockquote>
+<p>C：mysql命令行，sqlyog（图形界面），执行增删改查操作（类比成 Linux 系统的终端）</p>
+<p>S：安装Mysql的地方，对数据库进行处理</p>
+</blockquote>
+</blockquote>
+<ul>
+<li>SQL（Structure Query Language）：结构化查询语言</li>
+</ul>
+<blockquote>
+<p>注意在结尾<strong>加分号</strong>，才能执行</p>
+</blockquote>
+<ul>
+<li><p>主键：某一列，作用：唯一地标识某一行</p>
+</li>
+<li><p>USE xx（某数据库）</p>
+</li>
+</ul>
+<blockquote>
+<p>在sqlyog中点击数据库时，就会执行这个语句</p>
+</blockquote>
+<ul>
+<li>SHOW</li>
+</ul>
+<p>SHOW DATABASE：显示数据库</p>
+<p>SHOW TABLES：显示表</p>
+<p>DESCRIBE xx（表名）：查看表的数据属性</p>
+<p>SHOW CREATE DATABASE xx：查看创建数据库的语句</p>
+<p>SHOW CREATE TABLE xx：查看创建表的语句</p>
+<p>HELP SHOW </p>
+<hr>
+<h3 id="SELECT"><a href="#SELECT" class="headerlink" title="SELECT"></a>SELECT</h3><p><strong>查询</strong>数据</p>
+<p>语法：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT DISTINCT( 返回不同的值 ) column1, column2, * From table_name  // 在表中查找列，返回所有匹配的行</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>DISTINCT：返回值不同的行 </p>
+</li>
+<li><p>LIMIT：限制返回几行</p>
+</li>
+<li><p>OEDER BY ：对查询结果进行排序</p>
+</li>
+</ul>
+<blockquote>
+<p> DESC（ descending ） <strong>降序</strong>排序，只作用于它前面的列</p>
+</blockquote>
+<ul>
+<li>OFFSET：跳过结果集中的前几行</li>
+<li>GROUP BY：对结果集中的行进行分组，和<strong>聚合函数一起使用</strong></li>
+</ul>
+<blockquote>
+<p>例如 COUNT(*)：表示计算<strong>每一组</strong>的行数，因为有 GROUP BY 所以才是计算每一组</p>
+</blockquote>
+<p>例题：</p>
+<ol>
+<li>查询学生成绩表的第七名</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SELECT * </span><br><span class="line">FROM table_name</span><br><span class="line">ORDER BY score DESC</span><br><span class="line">LIMIT 1 OFFSET 6;</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>查询男女数目</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SELECT gender, COUNT(*) AS count</span><br><span class="line">FROM students</span><br><span class="line">GROUP BY gender;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="WHERE"><a href="#WHERE" class="headerlink" title="WHERE"></a>WHERE</h3><p><strong>过滤</strong>数据</p>
+<blockquote>
+<p>BETWEEN x AND x </p>
+<p>AND、OR、IN、NOT，配合 &gt;&#x3D;、&lt;&#x3D;、&#x3D;、!&#x3D;，IS null 使用</p>
+</blockquote>
+<ul>
+<li>用通配符进行过滤</li>
+</ul>
+<p>必须使用 LIKE</p>
+<p>%：任意字符出现任意次数</p>
+<p>_：只匹配单个字符</p>
+<ul>
+<li>正则表达式</li>
+</ul>
+<p>REGEXP后跟的东西作为正则表达式</p>
+<ul>
+<li>创建计算字段</li>
+</ul>
+<p>将数据库中的列进行拼接（ Contact() ）等操作</p>
+<blockquote>
+<p>AS 别名</p>
+</blockquote>
+<hr>
+<h3 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h3><p>LENGTH(xx)：返回 xx 的长度</p>
+<p>COUNT()：查询行的数量</p>
+<hr>
+<h3 id="分组"><a href="#分组" class="headerlink" title="分组"></a>分组</h3><p>GROUP BY：将查询结果按一个或多个列进行分组</p>
+<p>HAVING：用于对 GROUP BY 产生的分组结果进行筛选</p>
+<hr>
+<h3 id="INSERT"><a href="#INSERT" class="headerlink" title="INSERT"></a>INSERT</h3><p>语法：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">INSERT INTO table_name VALUES (value1, value2)  // 插入所有列的值</span><br><span class="line">INSERT INTO table_name (column1, column2) VALUES (value1, value2) // 插入指定列</span><br></pre></td></tr></table></figure>
+
+<p>插入多条数据：将  <code>(value1, value2)</code> 变成 <code>(&#39;xx&#39;, xx, &#39;xx&#39;),(&#39;xx&#39;, xx, xx&quot;)</code></p>
+<hr>
+<h3 id="DELETE"><a href="#DELETE" class="headerlink" title="DELETE"></a>DELETE</h3><p>语法：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DELETE FROM table_name WHERE condition;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="UPDATE"><a href="#UPDATE" class="headerlink" title="UPDATE"></a>UPDATE</h3><p>语法：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">UPDATE table_name SET column1 = value1, colume2 = value2 WHERE codition;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="2-进阶概念"><a href="#2-进阶概念" class="headerlink" title="2. 进阶概念"></a>2. 进阶概念</h2><h3 id="连接"><a href="#连接" class="headerlink" title="连接"></a>连接</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">SELECT </span><br><span class="line">    EmployeeUNI.unique_id, Employees.name （ 这里的列是连接后满足 ON 的结果集）</span><br><span class="line">FROM </span><br><span class="line">    Employees （ 左表 ）</span><br><span class="line">LEFT JOIN  // 左连接：返回左表中所有记录和右表中满足连接条件 ON 的记录，如果没有匹配的，则返回 NULL</span><br><span class="line">    EmployeeUNI （ 右表 ）</span><br><span class="line">ON </span><br><span class="line">    Employees.id = EmployeeUNI.id;</span><br></pre></td></tr></table></figure>
+
+<p>INNER JOIN （ 内连接 ）：只返回两个表中匹配的记录</p>
+<p>RIGHT JOIN（ 右连接 ）：返回右表中所有记录和左表中满足 ON 条件的记录，没有匹配的，则返回 NULL</p>
+<p>FULL JOIN （ 全连接 ）：返回两个表中的所有记录，当一边没有匹配时，结果中的该边列返回 NULL</p>
+<hr>
+<ul>
+<li>使用子查询</li>
+</ul>
+<p>子查询：嵌套在其他查询中的查询</p>
+<p>多用于 WHERE 子句的 IN 操作符中</p>
+<ul>
+<li>联结表</li>
+</ul>
+<p>外键：某个表中的一列，包含另一个表的主键值，定义了两个表的关系</p>
+<p>联结关系是通过 <strong>WHERE</strong> 建立的，将两个表中相应匹配的行（ 通过外键 ）联结到一起</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
